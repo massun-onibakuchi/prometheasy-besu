@@ -1,0 +1,72 @@
+{
+  "config": {
+    "chainid": 100337,
+    "homesteadBlock": 0,
+    "eip150Block": 0,
+    "eip155Block": 0,
+    "eip158Block": 0,
+    "byzantiumBlock": 0,
+    "londonBlock": 0,
+    "zeroBaseFee": true,
+    "qbft": {
+      "epochlength": 30000,
+      "blockperiodseconds": 5,
+      "requesttimeoutseconds": 10
+    },
+    "contractSizeLimit": 2147483647
+  },
+  "nonce": "0x0",
+  "timestamp": "0x0",
+  "extraData": "0xf87aa00000000000000000000000000000000000000000000000000000000000000000f854941bcf7529da62d599b3886aebe48833b4bd526b379482956cce6a91c828b89e349f6a584944dfc9b3d994878819d4b52363621ce8029fbbc30569acaf5163948fa815ef922850ee308b1b8d0ad8438ed01fc336c080c0",
+  "gasLimit": "0x1fffffffffffff",
+  "difficulty": "0x1",
+  "mixHash": "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
+  "coinbase": "0x0000000000000000000000000000000000000000",
+  "alloc": {
+    "f39Fd6e51aad88F6F4ce6aB8827279cffFb92266": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "5409ED021D9299bf6814279A6A1411A7e866A631": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "029eE7812C3Adc814Fed3927953C7121009A1125": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "0DF5C581EF4f32c2fC210175397503a4482Dd428": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "28a68B242bFc4619E24a041B18387A3c8DefCBaB": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "2a263e1b57F1ef69a49fF6E78B2daDA79517e1d2": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "41208E09A4c674b9a01026b5B3A81EE7EF748bFB": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "0x99771F0b2a4bbA0025808ed9c95BE64d8850597a": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "0xaFF21d6fe1296E44C6228a2BC091d12Ba9551ABf": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "b69DfFcF101ADfad11267CBB3d4870569F518b3f": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "Bd682Fa733BAF635D77cDfF0c176C9DDF778D5aD": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    },
+    "c7E6463f2cd388F7BB00E29EDD4db93453F764A6": {
+      "balance": "0x446c3b15f9926687d2c40534fdb564000000000000"
+    }
+  },
+  "number": "0x0",
+  "gasUsed": "0x0",
+  "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "blockchain": {
+    "nodes": {
+      "generate": true,
+      "count": 4
+    }
+  }
+}

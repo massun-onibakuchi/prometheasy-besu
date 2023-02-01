@@ -1,0 +1,43 @@
+genesis-file = "/config/genesis.json"
+node-private-key-file = "/opt/besu/keys/nodekey"
+logging = "INFO"
+data-path = "/opt/besu/database"
+host-allowlist = ["*"]
+
+# network
+tx-pool-limit-by-account-percentage = "1.0"
+p2p-port = 30303                            # The default is 30303.
+
+# rpc
+rpc-http-enabled = true
+rpc-http-host = "0.0.0.0"
+rpc-http-port = 8545
+rpc-http-cors-origins = ["*"]
+
+# ws
+rpc-ws-enabled = false
+# rpc-ws-host = "0.0.0.0"
+# rpc-ws-port = 8546
+
+# graphql
+graphql-http-enabled = false
+# graphql-http-host = "0.0.0.0"
+# graphql-http-port = 8547
+# graphql-http-cors-origins = ["*"]
+
+# metrics
+metrics-enabled = false
+metrics-host = "0.0.0.0"
+metrics-port = 9545
+
+# permissions
+permissions-nodes-config-file-enabled = true
+permissions-nodes-config-file = "/config/permissions_config.toml"
+
+# bootnodes
+# bootnodes = ["enode://<enode-url>]
+
+# Discovery at boot is set to a list of static files, but will also discover new nodes should they be added
+# static nodes
+static-nodes-file = "/config/static-nodes.json"
+discovery-enabled = true
