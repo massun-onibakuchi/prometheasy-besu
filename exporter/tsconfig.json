@@ -13,10 +13,10 @@
     "files": true
   },
   "include": [
-    "test",
+    "./test/",
     "./exporter/",
     "./types",
-    "./typechain-types"
+    "./typechain-types",
   ],
   "files": [
     "./hardhat.config.ts"
