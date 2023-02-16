@@ -2,7 +2,7 @@ import express, { Express } from 'express'
 import { Registry, collectDefaultMetrics } from 'prom-client'
 import { ethers } from 'ethers'
 import { logger } from './logger'
-import Multicall4ABI from './Multicall4.json'
+import Multicall4ABI from './abi/Multicall4.json'
 import { CustomMetrics, ContractName, ContractInstanceParams, Address } from './types'
 
 export abstract class BaseMetricsServer {
@@ -27,7 +27,7 @@ export abstract class BaseMetricsServer {
       loopIntervalMs?: number
       rpcUrl: string
       chainId: number
-      multicall4?: Address,
+      multicall4?: Address
       logger?: any
     }
   ) {
@@ -118,7 +118,7 @@ export abstract class BaseMetricsServer {
       this.contracts[name] = new ethers.Contract(address, interfaceAbi, this.provider)
     }
   }
-  protected _init(): void { }
+  protected _init(): void {}
 
   protected abstract internalMain(): Promise<void>
 

@@ -10,8 +10,8 @@
     "lint:check": "prettier --check '**/*.{js,ts}'",
     "lint:fix": "prettier --write '**/*.{js,ts}'",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts | pino-pretty -t"
+    "start": "node -r dotenv/config dist/src/index.js",
+    "dev": "ts-node -r dotenv/config src/index.ts"
   },
   "license": "UNLICENSED",
   "private": true,

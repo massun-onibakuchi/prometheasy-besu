@@ -7,6 +7,10 @@ export const Ok = <T, E>(value: T): Result<T, E> => ({
 
 export const Err = <T, E>(error: E): Result<T, E> => ({ ok: false, error })
 
+export const unreachable = (msg?: string) => {
+  throw new Error(msg ?? 'Something went wrong')
+}
+
 /**
  * Basic timeout-based async sleep function.
  *

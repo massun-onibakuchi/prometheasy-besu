@@ -6,7 +6,6 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "preserveSymlinks": true,
-    "outDir": "dist",
     "noImplicitAny": false
   },
   "exclude": [

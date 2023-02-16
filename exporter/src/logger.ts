@@ -1,4 +1,5 @@
 import { pino } from 'pino'
+import { LOG_LEVEL } from './config'
 
 export const logger = pino({
   formatters: {
@@ -11,6 +12,6 @@ export const logger = pino({
     colorize: true,
     translateTime: true,
   },
-  level: 'debug',
+  level: LOG_LEVEL,
   timestamp: true,
 })

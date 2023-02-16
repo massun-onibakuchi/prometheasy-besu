@@ -1,9 +1,11 @@
 import { ethers } from 'ethers'
 import express from 'express'
 import { BaseMetricsServer } from './base-metrics-server'
-import IERC20Abi from './IERC20.json'
+import IERC20Abi from './abi/IERC20.json'
 import { Err, retry } from './utils'
 import { CustomMetrics, ContractName, ContractInstanceParams, Address } from './types'
+
+type TokenInstanceParams = Partial<ContractInstanceParams> & Pick<ContractInstanceParams, 'address'>
 
 export class TokenMetricsServer extends BaseMetricsServer {
   readonly multicall4!: ethers.Contract
@@ -11,7 +13,7 @@ export class TokenMetricsServer extends BaseMetricsServer {
 
   constructor(
     metrics: CustomMetrics,
-    contractInstanceParams: Record<ContractName, ContractInstanceParams>,
+    contractInstanceParams: Record<ContractName, TokenInstanceParams>,
     config: {
       port?: number
       loopIntervalMs?: number
@@ -21,7 +23,8 @@ export class TokenMetricsServer extends BaseMetricsServer {
     },
     private readonly options: { accounts: Address[] }
   ) {
-    super(metrics, contractInstanceParams, config)
+    // TODO: use Generic type to make sure contractInstanceParams has TokenInstanceParams
+    super(metrics, contractInstanceParams as any, config)
   }
 
   protected _init(): void {
@@ -33,7 +36,7 @@ export class TokenMetricsServer extends BaseMetricsServer {
         const token = req.body?.token as Address
         const accounts = req.body?.accounts as Address[]
         // validate
-        if (!ethers.utils.isAddress(token) && !accounts.every(ethers.utils.isAddress)) {
+        if (!ethers.utils.isAddress(token) || !accounts || !accounts.every(ethers.utils.isAddress)) {
           throw Err({
             status: 400,
             message: 'invalid address. pls check input addresses',
@@ -66,12 +69,7 @@ export class TokenMetricsServer extends BaseMetricsServer {
     })
   }
 
-  protected _registerContract(
-    contractInstanceParams: Record<
-      ContractName,
-      Partial<ContractInstanceParams> & Pick<ContractInstanceParams, 'address'>
-    >
-  ): void {
+  protected _registerContract(contractInstanceParams: Record<ContractName, TokenInstanceParams>): void {
     for (const [contractName, params] of Object.entries(contractInstanceParams)) {
       const abi = params?.interfaceAbi
       this.contracts[contractName] = new ethers.Contract(
