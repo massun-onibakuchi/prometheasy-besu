@@ -1,18 +1,18 @@
-import { pino } from 'pino';
+import { pino } from 'pino'
 
 export const logger = pino({
-    formatters: {
-        level: (label) => ({
-            level: label,
-        }),
+  formatters: {
+    level: (label) => ({
+      level: label,
+    }),
+  },
+  transports: {
+    target: 'pino/file',
+    options: {
+      destination: 'logs/out.log',
+      mkdir: true,
     },
-    transports: {
-        target: 'pino/file',
-        options: {
-            destination: 'logs/out.log',
-            mkdir: true,
-        },
-    },
-    level: 'debug',
-    timestamp: true,
-});
+  },
+  level: 'debug',
+  timestamp: true,
+})
