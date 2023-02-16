@@ -9,11 +9,10 @@ import Multicall4Artifact from './mock/Multicall4.json'
 
 import { TokenMetricsServer } from '../src/token-metrics-server'
 import { Metrics, ContractInstanceParams } from '../src/base-metrics-server'
-import { sleep } from '../src/utils'
 import { Counter } from 'prom-client'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 
-describe('Lock', function () {
+describe('Metrics', function () {
   const rpcUrl = ethers.provider.connection.url
 
   // We define a fixture to reuse the same setup in every test.
@@ -109,7 +108,7 @@ describe('Lock', function () {
       try {
         const response = await request(ms.server)
           .get('/token')
-          .set('Accept', 'application/json')
+          .set({ 'Content-Type': 'application/json' })
           .send({
             token: token.address,
             accounts: [owner.address, user.address],

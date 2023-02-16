@@ -10,6 +10,7 @@ import {
 import { logger } from './logger'
 import IERC20Abi from './IERC20.json'
 import express from 'express'
+import { Err } from './utils';
 
 export class TokenMetricsServer extends BaseMetricsServer {
     readonly multicall4!: ethers.Contract
@@ -28,30 +29,31 @@ export class TokenMetricsServer extends BaseMetricsServer {
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
         this.app.get('/token', async (req, resp) => {
+            logger.debug(`got request GET /token`, req.body)
             try {
-                logger.debug(`got request GET /token`, req.body)
-                const token = req.body.token as Address
-                const accounts = req.body.accounts as Address[]
+                const token = req.body?.token as Address
+                const accounts = req.body?.accounts as Address[]
+
                 if (!ethers.utils.isAddress(token) && !accounts.every(ethers.utils.isAddress)) {
-                    resp.status(400).json({ message: 'invalid address' })
-                    return
+                    throw Err({ status: 400, message: 'invalid address', err: `token: ${token}, accounts ${accounts.toString()}` })
                 }
-                const balances = await this.multicall4.getTokenBalances(token, accounts).catch((err) => {
-                    logger.error(err)
-                    console.log('err :>> ', err)
-                    resp.status(400).json({ message: 'rpc error' })
-                    return
-                })
+                const balances = await this.multicall4.getTokenBalances(token, accounts)
+                    .catch((err) => {
+                        throw Err({ status: 400, message: `RPC error`, err })
+                    })
                 resp.status(200).json({
                     message: 'ok',
                     token: token,
                     balances,
-                })
-            } catch (error) {
-                resp.status(500).json({
-                    message: 'error',
-                    error,
-                })
+                }).send()
+            } catch (error: any) {
+                logger.error(error)
+                console.log('error :>>', error)
+                if ('ok' in error) {
+                    // maybe error is instance of Err
+                    return resp.status(error.status).json({ message: error.message })
+                }
+                resp.status(500).json({ message: "unhandled error" }).send()
             }
         })
     }

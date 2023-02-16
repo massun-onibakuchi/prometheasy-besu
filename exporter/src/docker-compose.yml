@@ -1,0 +1,18 @@
+# command:
+# docker-compose -f docker-compose-simulater.yml up
+version: '3'
+services:
+    # use anvil
+    # anvil --chain-id=1337 --hardfork=berlin --gas-price=0
+    postgres:
+        image: postgres:9.6
+        environment:
+            - POSTGRES_USER=api
+            - POSTGRES_PASSWORD=api
+            - POSTGRES_DB=api
+        # persist the postgres data to disk so we don't lose it
+        # on rebuilds.
+        volumes:
+            - ./postgres:/var/lib/postgresql/data
+        ports:
+            - '5432:5432'

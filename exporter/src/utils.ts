@@ -1,3 +1,14 @@
+export type Result<T = void, E = void> =
+  | { ok: true; value: T }
+  | { ok: false; error: E }
+
+export const Ok = <T, E>(value: T): Result<T, E> => ({
+  ok: true,
+  value,
+})
+
+export const Err = <T, E>(error: E): Result<T, E> => ({ ok: false, error })
+
 /**
  * Basic timeout-based async sleep function.
  *
