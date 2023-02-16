@@ -6,8 +6,9 @@ const config: HardhatUserConfig = {
   solidity: '0.8.13',
   defaultNetwork: 'hardhat',
   networks: {
-    ganache: {
+    localhost: {
       url: 'http://localhost:8545',
+
     }
   }
 }
