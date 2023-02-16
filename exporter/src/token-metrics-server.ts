@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import {
+    Address,
     BaseMetricsServer,
     ContractAddress,
     ContractInstanceParams,
@@ -10,22 +11,24 @@ import { logger } from './logger'
 import IERC20Abi from './IERC20.json'
 
 export class TokenMetricsServer extends BaseMetricsServer {
+    readonly multicall4!: ethers.Contract
     lastSyncBlock: number | undefined
 
     constructor(
         metrics: Metrics,
         contractInstanceParams: Record<ContractName, ContractInstanceParams>,
-        config: { port?: number; loopIntervalMs?: number; rpcUrl: string; chainId: number; multicall4: ContractAddress }
+        config: { port?: number; loopIntervalMs?: number; rpcUrl: string; chainId: number; multicall4: ContractAddress },
+        private readonly options: { accounts: Address[] }
     ) {
         super(metrics, contractInstanceParams, config)
     }
 
-    protected _registerContract(contractInstanceParams: Record<string, ContractInstanceParams>): void {
+    protected _registerContract(contractInstanceParams: Record<ContractName, Partial<ContractInstanceParams> & Pick<ContractInstanceParams, "address">>): void {
         for (const [contractName, params] of Object.entries(contractInstanceParams)) {
-            const interfaceAbi = params?.interfaceAbi
+            const abi = params?.interfaceAbi
             this.contracts[contractName] = new ethers.Contract(
                 params.address,
-                interfaceAbi == undefined ? IERC20Abi.abi : interfaceAbi,
+                abi == undefined ? IERC20Abi.abi : abi,
                 this.provider
             )
         }
@@ -41,7 +44,7 @@ export class TokenMetricsServer extends BaseMetricsServer {
 
         // https://www.testingchain.xyz/posts/cheatsheets/ethers-js
         for (const [name, token] of Object.entries(this.contracts)) {
-            const dripCreatedEvents: (ethers.EventLog | ethers.Log)[] | [] = await this.contracts['token']
+            const transferEvents: (ethers.EventLog | ethers.Log)[] | [] = await token
                 .queryFilter('Transfer', fromBlock, currentBlock)
                 .catch((err) => {
                     logger.info(`got unexpected RPC error`, {
@@ -52,20 +55,7 @@ export class TokenMetricsServer extends BaseMetricsServer {
                     // this.metrics.unexpectedRpcErrors.labels(err.message).inc()
                     return []
                 })
+            const balances = await this.multicall4.getTokenBalances(token.target, this.options.accounts)
         }
-        // const dripCreatedEvents: (ethers.EventLog | ethers.Log)[] | [] =
-        //     await this.contracts['token'].queryFilter("Transfer", fromBlock, currentBlock).catch((err) => {
-        //         logger.info(`got unexpected RPC error`, {
-        //             section: 'creations',
-        //             name: 'NULL',
-        //             err,
-        //         })
-        //         // this.metrics.unexpectedRpcErrors.labels(err.message).inc()
-        //         return []
-        //     })
-
-        // for (const event of dripCreatedEvents) {
-        //     // this.metrics.executedDripCount.labels(event.args?.to).inc()
-        // }
     }
 }

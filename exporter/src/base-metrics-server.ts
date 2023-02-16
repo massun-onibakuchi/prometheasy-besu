@@ -8,6 +8,7 @@ import Multicall4ABI from './Multicall4.json'
 // type ContractEventFilterParam = ethers.ContractEventName
 export type Metrics = Record<string, Metric>
 export type ContractAddress = string
+export type Address = string
 export type ContractName = string
 export interface ContractInstanceParams {
   address: ContractAddress
@@ -21,14 +22,15 @@ export abstract class BaseMetricsServer {
   readonly port: number = 3000 // default port
   readonly loopIntervalMs: number = 10000 // default loop interval in ms
   readonly metrics: Metrics
-  contracts: Record<ContractName, ethers.Contract>
-  timer: NodeJS.Timeout
-  mainPromise: Promise<void>
+  readonly multicall4: ethers.Contract | undefined
+  contracts!: Record<ContractName, ethers.Contract>
+  timer: NodeJS.Timeout | undefined
+  mainPromise: Promise<void> | undefined
 
   constructor(
     metrics: Metrics,
     contractInstanceParams: Record<ContractName, ContractInstanceParams>,
-    config: { port?: number; loopIntervalMs?: number; rpcUrl: string; chainId: number; multicall4?: ContractAddress }
+    config: { port?: number; loopIntervalMs?: number; rpcUrl: string; chainId: number; multicall4?: ContractAddress },
   ) {
     this.metrics = metrics
     this.port = config?.port ?? this.port
@@ -39,10 +41,10 @@ export abstract class BaseMetricsServer {
     })
     this.registry = new Registry()
 
-    const _contractInstanceParams = config?.multicall4
-      ? { multicall4: { address: config.multicall4, interfaceAbi: Multicall4ABI.abi }, ...contractInstanceParams }
-      : contractInstanceParams
-    this._registerContract(_contractInstanceParams)
+    this.multicall4 = config?.multicall4
+      ? new ethers.Contract(config.multicall4, Multicall4ABI.abi, this.provider)
+      : undefined
+    this._registerContract(contractInstanceParams)
     this._registerCustomMetrics(this.registry, metrics)
 
     this._init()
@@ -88,13 +90,13 @@ export abstract class BaseMetricsServer {
       try {
         this.mainPromise = this.internalMain()
         await this.mainPromise
-      } catch (err) {
+      } catch (err ) {
         // this.metrics.unhandledErrors.labels(err.message).inc()
-        logger.error('caught an unhandled exception', {
-          message: err.message,
-          stack: err.stack,
-          code: err.code,
-        })
+        // logger.error('caught an unhandled exception', {
+        //   message: err.message,
+        //   stack: err.stack,
+        //   code: err.code,
+        // })
       }
       this.timer = setTimeout(doLoop, this.loopIntervalMs)
     }
