@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "repository": "git@github.com:massun-onibakuchi/prometheasy-besu.git",
-  "author": "Massun onibakuchi <etherdao0x00@gmail.com> (https://github.com/massun-onibakuchi)",
+  "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
   "scripts": {
     "chain": "hardhat node",
     "test": "hardhat test --network localhost",

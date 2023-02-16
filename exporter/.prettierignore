@@ -1,0 +1,7 @@
+# Ignore artifacts:
+artifacts/
+cache/
+typechain-types/
+types/
+lib/
+dist/

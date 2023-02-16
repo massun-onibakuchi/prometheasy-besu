@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:massun-onibakuchi/prometheasy-besu.git",
-  "author": "Massun onibakuchi <etherdao0x00@gmail.com> (https://github.com/massun-onibakuchi)",
+  "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
   "license": "UNLICENSED",
   "workspaces": [
     "exporter"
@@ -13,6 +13,19 @@
     "**/@typechain/*"
   ],
   "private": true,
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=7.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "precommit"
+    }
+  },
+  "lint-staged": {
+    "*.js": "prettier --write",
+    "*.ts": "prettier --write"
+  },
   "scripts": {
     "build": "yarn workspace exporter build",
     "test": "yarn workspace exporter test",
@@ -25,6 +38,7 @@
     "@types/supertest": "^2.0.12",
     "chai": "^4.3.7",
     "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
     "prettier": "^2.8.4"
   },
   "dependencies": {
