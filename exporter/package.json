@@ -1,19 +1,26 @@
 {
-  "name": "@consensys-software/generate_node_details",
+  "name": "exporter",
   "version": "1.0.0",
-  "description": "Example script to create nodekeys and address for a Quorum (Besu or GoQuorum) node",
+  "description": "",
+  "repository": "git@github.com:massun-onibakuchi/prometheasy-besu.git",
+  "author": "Massun onibakuchi <etherdao0x00@gmail.com> (https://github.com/massun-onibakuchi)",
   "scripts": {
+    "chain": "hardhat node",
+    "test": "hardhat test --network localhost",
     "lint:check": "prettier --check '**/*.{js,ts}'",
-    "lint:fix": "prettier --write '**/*.{js,ts}'"
+    "lint:fix": "prettier --write '**/*.{js,ts}'",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts | pino-pretty -t"
   },
-  "license": "Apache-2.0",
+  "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
-    "dotenv": "^16.0.3",
     "ethers": "^5.7.2",
     "express": "^4.18.2",
     "pino": "^8.10.0",
+    "pino-pretty": "^9.2.0",
     "prom-client": "^14.1.1",
-    "redis": "^4.6.4",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
@@ -25,13 +32,8 @@
     "@nomiclabs/hardhat-etherscan": "^3.1.6",
     "@typechain/hardhat": "^6.1.5",
     "@types/express": "^4.17.17",
-    "@types/mocha": "^10.0.1",
-    "@types/supertest": "^2.0.12",
-    "chai": "^4.3.7",
     "hardhat": "^2.12.7",
     "hardhat-gas-reporter": "^1.0.9",
-    "pino-pretty": "^9.2.0",
-    "prettier": "^2.8.4",
     "solidity-coverage": "^0.8.2",
     "supertest": "^6.3.3"
   }

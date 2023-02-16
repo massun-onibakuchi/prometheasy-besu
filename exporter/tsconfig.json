@@ -1,24 +1,16 @@
 {
-  "compilerOptions": {
-    "target": "es2018",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "preserveSymlinks": true,
-    "outDir": "dist",
-    "noImplicitAny": false
-  },
+  "extends": "../tsconfig.json",
+  "include": [
+    "src/**/*",
+    "test/",
+    "types/",
+    "typechain-types/",
+  ],
   "ts-node": {
     "files": true
   },
-  "include": [
-    "./test/",
-    "./exporter/",
-    "./types",
-    "./typechain-types",
-  ],
   "files": [
+    "package.json",
     "./hardhat.config.ts"
   ]
 }

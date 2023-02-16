@@ -1,9 +1,6 @@
 # Ignore artifacts:
-artifacts
-cache
-hh-cache
-coverage
-coverage*
-typechain-types
+artifacts/
+cache/
+typechain-types/
+types/
 lib/
-docs/

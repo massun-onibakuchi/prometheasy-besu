@@ -6,12 +6,10 @@ export const logger = pino({
       level: label,
     }),
   },
-  transports: {
-    target: 'pino/file',
-    options: {
-      destination: 'logs/out.log',
-      mkdir: true,
-    },
+  transport: {
+    target: 'pino-pretty',
+    colorize: true,
+    translateTime: true,
   },
   level: 'debug',
   timestamp: true,

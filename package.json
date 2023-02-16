@@ -1,1 +1,33 @@
-{}
+{
+  "name": "besu-template",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:massun-onibakuchi/prometheasy-besu.git",
+  "author": "Massun onibakuchi <etherdao0x00@gmail.com> (https://github.com/massun-onibakuchi)",
+  "license": "UNLICENSED",
+  "workspaces": [
+    "exporter"
+  ],
+  "nohoist": [
+    "**/typechain/*",
+    "**/@typechain/*"
+  ],
+  "private": true,
+  "scripts": {
+    "build": "yarn workspace exporter build",
+    "test": "yarn workspace exporter test",
+    "lint:check": "yarn workspace exporter lint:check",
+    "lint:fix": "yarn workspace exporter lint:fix",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/supertest": "^2.0.12",
+    "chai": "^4.3.7",
+    "husky": "^8.0.3",
+    "prettier": "^2.8.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}

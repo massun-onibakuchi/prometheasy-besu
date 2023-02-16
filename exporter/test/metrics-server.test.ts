@@ -1,6 +1,8 @@
-import request from 'supertest'
-import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import { expect } from 'chai'
+import request from 'supertest'
+import { Counter } from 'prom-client'
+import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { ethers } from 'hardhat'
 import { Contract } from 'ethers'
 
@@ -8,9 +10,8 @@ import MockERC20Artifact from './mock/MockERC20.json'
 import Multicall4Artifact from './mock/Multicall4.json'
 
 import { TokenMetricsServer } from '../src/token-metrics-server'
-import { Metrics, ContractInstanceParams } from '../src/base-metrics-server'
-import { Counter } from 'prom-client'
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
+import { sleep } from '../src/utils'
+import { CustomMetrics, ContractInstanceParams } from '../src/types'
 
 describe('Metrics', function () {
   const rpcUrl = ethers.provider.connection.url
@@ -19,7 +20,7 @@ describe('Metrics', function () {
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
   async function deployMetrics(
-    metrics: Metrics,
+    metrics: CustomMetrics,
     contractInstanceParams: Record<string, ContractInstanceParams>,
     config,
     options
@@ -66,7 +67,7 @@ describe('Metrics', function () {
       }),
     }
     beforeEach(async function () {
-      ; ({ token, multicall4, owner, user } = await loadFixture(deployFixture))
+      ;({ token, multicall4, owner, user } = await loadFixture(deployFixture))
       ms = await deployMetrics(
         metrics,
         {
@@ -75,49 +76,73 @@ describe('Metrics', function () {
             interfaceAbi: MockERC20Artifact.abi,
           },
         },
-        { port: 3000, multicall4: multicall4.address, rpcUrl },
+        {
+          port: 3000,
+          loopIntervalMs: 1000,
+          multicall4: multicall4.address,
+          rpcUrl,
+        },
         { accounts: [owner.address, user.address] }
       )
     })
-    this.afterEach(async function () {
+    afterEach(async function () {
       ms?.registry.clear()
+      ms?.server?.close()
     })
     it('shoud serve metrics', async function () {
+      // arrange
       ms.startServer()
-      try {
-        // Create two metrics for testing
-        metrics.tokenTransfer.inc()
-        metrics.tokenTransfer.inc()
+      // Create two metrics for testing
+      metrics.tokenTransfer.inc()
+      metrics.tokenTransfer.inc()
 
-        metrics.balances.inc(100)
-
-        // Verify that the registered metrics are served at `/`
-        const response = await request(ms.server).get('/metrics').send()
-        expect(response.status).eq(200)
-        expect(response.text).match(/transfer 2/)
-        expect(response.text).match(/balance 100/)
-      } finally {
-        ms.server?.close()
+      metrics.balances.inc(100)
+      // assert
+      // Verify that the registered metrics are served at `/`
+      const response = await request(ms.server).get('/metrics').send()
+      expect(response.status).eq(200)
+      expect(response.text).match(/transfer 2/)
+      expect(response.text).match(/balance 100/)
+    })
+    it('shoud collect metrics when transfer event emitted', async function () {
+      // arrange
+      ms.startServer()
+      // act
+      ms.run()
+      await token.connect(owner).mint(owner.address, 1000)
+      await token.connect(owner).burn(owner.address, 1)
+      while (await ms?.mainPromise) {
+        await sleep(500)
       }
+      // assert
+      const response = await request(ms.server).get('/metrics').send()
+      expect(response.status).eq(200)
+      expect(response.text).match(/transfer 2/)
+      // post-action
+      await ms.stop()
     })
     it('shoud serve /token', async function () {
-      // prepare
+      // arrange
       ms.startServer()
       await token.connect(owner).mint(owner.address, 1000)
       const balances = await multicall4.getTokenBalances(token.address, [owner.address, user.address])
-      try {
-        const response = await request(ms.server)
-          .get('/token')
-          .set({ 'Content-Type': 'application/json' })
-          .send({
-            token: token.address,
-            accounts: [owner.address, user.address],
-          })
-        expect(response.status).eq(200)
-        console.log('response.body :>> ', response.body)
-      } finally {
-        ms.server?.close()
-      }
+      // act
+      const response = await request(ms.server)
+        .get('/token')
+        .set({ 'Content-Type': 'application/json' })
+        .send({
+          token: token.address,
+          accounts: [owner.address, user.address],
+        })
+      // assert
+      expect(response.status).eq(200)
+      expect(response.body).have.property('token', token.address) // string
+      expect(response.body).have.deep.property(
+        'balances',
+        balances.map((b) => b.toString())
+      ) // string[]
     })
+    it('shoud serve /token with error when invalid addresses', async function () {})
+    it('shoud serve /token with error when rpc error', async function () {})
   })
 })
