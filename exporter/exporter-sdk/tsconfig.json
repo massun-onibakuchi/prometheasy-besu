@@ -5,7 +5,8 @@
   },
   "include": [
     "src/**/*",
-    "src/**/*.json", // Somehow this is not included in the build. add it explicitly
+    "src/**/*.json", // *.json files are not included by default
+    "test/",
     "test/**/*",
     "test/**/*.json", 
   ],

@@ -23,8 +23,7 @@ export class TokenMetricsServer extends BaseMetricsServer {
       rpcUrl: string
       chainId: number
       multicall4: Address
-    },
-    private readonly options: { accounts: Address[] }
+    }
   ) {
     // TODO: use Generic type to make sure contractInstanceParams has TokenInstanceParams
     super(metrics, contractInstanceParams as any, config)
