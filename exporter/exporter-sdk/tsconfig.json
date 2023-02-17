@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.json", // Somehow this is not included in the build. add it explicitly
+    "test/**/*",
+    "test/**/*.json", 
+  ],
+  "ts-node": {
+    "files": true
+  },
+  "files": [
+    "package.json",
+    "./hardhat.config.ts"
+  ]
+}

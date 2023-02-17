@@ -6,7 +6,7 @@
   "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
   "license": "UNLICENSED",
   "workspaces": [
-    "exporter"
+    "exporter/*"
   ],
   "nohoist": [
     "**/typechain/*",
@@ -27,10 +27,11 @@
     "*.ts": "prettier --write"
   },
   "scripts": {
-    "build": "yarn workspace exporter build",
-    "test": "yarn workspace exporter test",
-    "lint:check": "yarn workspace exporter lint:check",
-    "lint:fix": "yarn workspace exporter lint:fix",
+    "=======": "========= HENHANCEMENT: yarn workspaces foreach =======",
+    "build": "yarn workspace @exporter/exporter-sdk build && yarn workspace @exporter/server build",
+    "test": "yarn workspace @exporter/exporter-sdk test && yarn workspace @exporter/server test",
+    "lint:check": "yarn workspace @exporter/exporter-sdk lint:check && yarn workspace @exporter/server lint:check",
+    "lint:fix": "yarn workspace @exporter/exporter-sdk lint:fix && yarn workspace @exporter/server lint:fix",
     "prepare": "husky install"
   },
   "devDependencies": {

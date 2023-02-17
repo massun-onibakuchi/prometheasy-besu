@@ -1,7 +1,8 @@
 import fs from 'fs'
-import { TokenMetricsServer } from './token-metrics-server'
+import { TokenMetricsServer } from '@exporter/exporter-sdk'
 import { Counter, Gauge } from 'prom-client'
 import { logger } from './logger'
+
 import { CHAIN_ID, TOKENS_FILE_PATH, ACCOUNTS_FILE_PATH, MULTICALL4, PORT, RPC_URL } from './config'
 
 const metrics = {

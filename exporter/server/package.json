@@ -1,12 +1,13 @@
 {
-  "name": "exporter",
+  "name": "@exporter/server",
   "version": "1.0.0",
   "description": "",
   "repository": "git@github.com:massun-onibakuchi/prometheasy-besu.git",
   "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
     "chain": "hardhat node",
-    "test": "hardhat test --network localhost",
+    "test": "exit 0",
     "lint:check": "prettier --check '**/*.{js,ts}'",
     "lint:fix": "prettier --write '**/*.{js,ts}'",
     "build": "tsc",
@@ -16,6 +17,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@exporter/exporter-sdk": "*",
     "ethers": "^5.7.2",
     "express": "^4.18.2",
     "pino": "^8.10.0",

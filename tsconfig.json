@@ -3,10 +3,15 @@
     "target": "es2018",
     "module": "commonjs",
     "strict": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "preserveSymlinks": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "declarationMap": true,
+    //  See https://www.typescriptlang.org/docs/handbook/project-references.html
+    "composite": true, // used for project references.
+    "declaration": true, // used for project references.
   },
   "exclude": [
     "node_modules",

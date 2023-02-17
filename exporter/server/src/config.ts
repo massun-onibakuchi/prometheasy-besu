@@ -1,4 +1,4 @@
-import { unreachable } from './utils'
+import { unreachable } from '@exporter/exporter-sdk'
 
 const unwrapToNum = (value: string | undefined): number => {
   if (value === undefined) {

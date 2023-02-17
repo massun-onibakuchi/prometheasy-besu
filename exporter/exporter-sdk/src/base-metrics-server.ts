@@ -3,7 +3,8 @@ import { Registry, collectDefaultMetrics } from 'prom-client'
 import { ethers } from 'ethers'
 import { logger } from './logger'
 import Multicall4ABI from './abi/Multicall4.json'
-import { CustomMetrics, ContractName, ContractInstanceParams, Address } from './types'
+import type { CustomMetrics, ContractName, ContractInstanceParams, Address } from './types'
+import type pino from 'pino'
 
 export abstract class BaseMetricsServer {
   readonly app: Express
@@ -28,7 +29,7 @@ export abstract class BaseMetricsServer {
       rpcUrl: string
       chainId: number
       multicall4?: Address
-      logger?: any
+      logger?: pino.Logger
     }
   ) {
     this.metrics = metrics
