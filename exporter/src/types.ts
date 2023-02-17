@@ -9,3 +9,4 @@ export interface ContractInstanceParams {
   address: Address
   interfaceAbi: ethers.ContractInterface
 }
+export type TokenInstanceParams = Partial<ContractInstanceParams> & Pick<ContractInstanceParams, 'address'>

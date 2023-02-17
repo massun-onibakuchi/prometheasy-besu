@@ -3,10 +3,13 @@ import express from 'express'
 import { BaseMetricsServer } from './base-metrics-server'
 import IERC20Abi from './abi/IERC20.json'
 import { Err, retry } from './utils'
-import { CustomMetrics, ContractName, ContractInstanceParams, Address } from './types'
+import { CustomMetrics, ContractName, Address, TokenInstanceParams } from './types'
 
-type TokenInstanceParams = Partial<ContractInstanceParams> & Pick<ContractInstanceParams, 'address'>
-
+namespace Express {
+  export interface Request {
+    body: { token: Address; accounts: Address[] }
+  }
+}
 export class TokenMetricsServer extends BaseMetricsServer {
   readonly multicall4!: ethers.Contract
   lastSyncBlock: number | undefined
@@ -30,7 +33,7 @@ export class TokenMetricsServer extends BaseMetricsServer {
   protected _init(): void {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
-    this.app.get('/token', async (req, resp) => {
+    this.app.get('/token', async (req: Express.Request, resp) => {
       this.logger.debug(`got request GET /token`, req.body)
       try {
         const token = req.body?.token as Address

@@ -10,7 +10,6 @@ import MockERC20Artifact from './mock/MockERC20.json'
 import Multicall4Artifact from './mock/Multicall4.json'
 
 import { TokenMetricsServer } from '../src/token-metrics-server'
-import { sleep } from '../src/utils'
 import { CustomMetrics, ContractInstanceParams } from '../src/types'
 
 describe('Metrics', function () {
@@ -53,12 +52,12 @@ describe('Metrics', function () {
     const metrics = {
       tokenTransfer: new Counter({
         name: 'transfer',
-        help: 'RPC provider method call',
+        help: 'token transfer',
         labelNames: ['url', 'method', 'params', 'instance_hostname'],
       }),
       balances: new Counter({
         name: 'balance',
-        help: 'RPC provider method call',
+        help: 'token balance',
         labelNames: ['url', 'method', 'params', 'instance_hostname'],
       }),
       unhandledErrors: new Counter({
@@ -111,9 +110,7 @@ describe('Metrics', function () {
       ms.run()
       await token.connect(owner).mint(owner.address, 1000)
       await token.connect(owner).burn(owner.address, 1)
-      while (await ms?.mainPromise) {
-        await sleep(500)
-      }
+      await ms?.mainPromise
       // assert
       const response = await request(ms.server).get('/metrics').send()
       expect(response.status).eq(200)
