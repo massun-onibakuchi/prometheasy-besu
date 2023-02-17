@@ -1,0 +1,17 @@
+.DS_Store
+
+.idea/
+.lh/
+*.iml
+*.log
+
+build
+cache
+
+.vscode
+
+node_modules
+.env
+
+dist
+

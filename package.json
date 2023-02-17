@@ -6,7 +6,8 @@
   "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
   "license": "UNLICENSED",
   "workspaces": [
-    "exporter/*"
+    "exporter/*",
+    "perf-tester"
   ],
   "nohoist": [
     "**/typechain/*",

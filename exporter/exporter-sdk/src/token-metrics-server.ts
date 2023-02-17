@@ -1,7 +1,7 @@
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import express from 'express'
 import { BaseMetricsServer } from './base-metrics-server'
-import { retry, rwrap as wrapResult } from './utils'
+import { Result, retry, rwrap as wrapResult } from './utils'
 import IERC20Abi from './abi/IERC20.json'
 import type { TokenMetrics, ContractName, Address, TokenInstanceParams } from './types'
 
@@ -45,7 +45,7 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
         // fetch
         // result.value is an array of balances
         this.logger.debug(`fetching balances for token ${token}`)
-        const result = await wrapResult(
+        const result: Result<BigNumber[], undefined> = await wrapResult(
           async () => await this.multicall4.getTokenBalances(token, accounts),
           undefined,
           this.logger
@@ -107,7 +107,8 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
           return []
         })
       this.logger.debug(`got ${transferEvents.length} Transfer events for token ${name}`)
-      this.metrics.tokenTransfer.labels(name, JSON.stringify({ from: '', to: '' })).inc(transferEvents.length)
+      // TODO: collect metrics for each token
+      // this.metrics.tokenTransfer.labels(name, JSON.stringify({ from: '', to: '' })).inc(transferEvents.length)
     }
   }
 }
