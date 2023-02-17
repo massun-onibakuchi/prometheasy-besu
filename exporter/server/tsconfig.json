@@ -8,7 +8,7 @@
       // This is the path to the dist folder of the exporter-sdk
       // exporter server depends on the exporter-sdk
       "@exporter/exporter-sdk": [
-        "exporter/exporter-sdk/dist"
+        "exporter/exporter-sdk/dist/src"
       ]
     },
   },

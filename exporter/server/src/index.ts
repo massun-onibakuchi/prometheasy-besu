@@ -20,17 +20,12 @@ const metrics = {
 if (require.main === module) {
   const accounts = JSON.parse(fs.readFileSync(ACCOUNTS_FILE_PATH, 'utf8'))
   const tokenAddresses = JSON.parse(fs.readFileSync(TOKENS_FILE_PATH, 'utf8'))
-  const service = new TokenMetricsServer(
-    metrics,
-    tokenAddresses,
-    {
-      port: PORT,
-      rpcUrl: RPC_URL,
-      chainId: CHAIN_ID,
-      multicall4: MULTICALL4,
-    },
-    { accounts: accounts }
-  )
+  const service = new TokenMetricsServer(metrics, tokenAddresses, {
+    port: PORT,
+    rpcUrl: RPC_URL,
+    chainId: CHAIN_ID,
+    multicall4: MULTICALL4,
+  })
   service.startServer()
   service.run()
 }

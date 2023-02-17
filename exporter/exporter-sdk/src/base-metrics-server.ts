@@ -3,10 +3,10 @@ import { Registry, collectDefaultMetrics } from 'prom-client'
 import { ethers } from 'ethers'
 import { logger } from './logger'
 import Multicall4ABI from './abi/Multicall4.json'
-import type { CustomMetrics, ContractName, ContractInstanceParams, Address } from './types'
+import type { BaseMetrics, ContractName, ContractInstanceParams, Address } from './types'
 import type pino from 'pino'
 
-export abstract class BaseMetricsServer {
+export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
   readonly app: Express
   readonly registry: Registry
   readonly provider: ethers.providers.StaticJsonRpcProvider
@@ -107,7 +107,7 @@ export abstract class BaseMetricsServer {
     }
   }
 
-  protected _registerCustomMetrics(registry: Registry, metrics: CustomMetrics): void {
+  protected _registerCustomMetrics(registry: Registry, metrics: BaseMetrics): void {
     for (const metric of Object.values(metrics)) {
       registry.registerMetric(metric)
     }

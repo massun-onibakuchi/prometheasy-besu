@@ -10,7 +10,7 @@ import MockERC20Artifact from './mock/MockERC20.json'
 import Multicall4Artifact from './mock/Multicall4.json'
 
 import { TokenMetricsServer } from '../src/token-metrics-server'
-import { CustomMetrics, ContractInstanceParams } from '../src/types'
+import { TokenMetrics, TokenInstanceParams } from '../src/types'
 
 describe('Metrics', function () {
   const rpcUrl = ethers.provider.connection.url
@@ -19,18 +19,13 @@ describe('Metrics', function () {
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
   async function deployMetrics(
-    metrics: CustomMetrics,
-    contractInstanceParams: Record<string, ContractInstanceParams>,
+    metrics: TokenMetrics,
+    contractInstanceParams: Record<string, TokenInstanceParams>,
     config,
-    options
+    options?
   ) {
     const chainId = await ethers.provider.getNetwork().then((network) => network.chainId)
-    return new TokenMetricsServer(
-      metrics,
-      contractInstanceParams,
-      { ...config, chainId, rpcUrl: config.rpcUrl },
-      options
-    )
+    return new TokenMetricsServer(metrics, contractInstanceParams, { ...config, chainId, rpcUrl: config.rpcUrl })
   }
   async function deployFixture() {
     // Contracts are deployed using the first signer/account by default
@@ -80,8 +75,7 @@ describe('Metrics', function () {
           loopIntervalMs: 1000,
           multicall4: multicall4.address,
           rpcUrl,
-        },
-        { accounts: [owner.address, user.address] }
+        }
       )
     })
     afterEach(async function () {
@@ -139,7 +133,35 @@ describe('Metrics', function () {
         balances.map((b) => b.toString())
       ) // string[]
     })
-    it('shoud serve /token with error when invalid addresses', async function () {})
-    it('shoud serve /token with error when rpc error', async function () {})
+    it('/token should catch error when token is not a contract', async function () {
+      // arrange
+      ms.startServer()
+      // act
+      // assert
+      const response = await request(ms.server)
+        .get('/token')
+        .set({ 'Content-Type': 'application/json' })
+        .send({
+          token: owner.address, // not a contract
+          accounts: [owner.address, user.address],
+        })
+      expect(response.status).eq(400)
+      expect(response.body.message).match(/RPC error/)
+    })
+    it('/token should catch error when token is not a contract', async function () {
+      // arrange
+      ms.startServer()
+      // act
+      // assert
+      const response = await request(ms.server)
+        .get('/token')
+        .set({ 'Content-Type': 'application/json' })
+        .send({
+          token: '0xcafe', // invalid address
+          accounts: [owner.address, user.address],
+        })
+      expect(response.status).eq(400)
+      expect(response.body.message).match(/invalid/)
+    })
   })
 })

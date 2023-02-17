@@ -11,6 +11,25 @@ export const unreachable = (msg?: string) => {
   throw new Error(msg ?? 'Something went wrong')
 }
 
+/// Wrap a function that returns a promise and return a Result.
+/// If the function throws, return Err.
+/// If the function succeeds, return Ok.
+/// If logger is provided, log the error.
+/// @notice
+export async function rwrap<T = void, E = void>(
+  func: () => Promise<T> | T,
+  onError: E,
+  logger?: { error: (...args: any) => void } | undefined
+): Promise<Result<T, E>> {
+  try {
+    const value = await func()
+    return Ok(value)
+  } catch (error: any) {
+    if (logger) logger.error(error)
+    return Err(onError)
+  }
+}
+
 /**
  * Basic timeout-based async sleep function.
  *
@@ -22,6 +41,8 @@ export function sleep(ms: number): Promise<void> {
   })
 }
 
+// Copy from Optimism repo
+// retry a function with specified number of tries.
 export async function retry<T>(
   callback: () => Promise<T>,
   tries: number,

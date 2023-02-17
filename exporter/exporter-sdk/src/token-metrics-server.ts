@@ -1,21 +1,21 @@
 import { ethers } from 'ethers'
 import express from 'express'
 import { BaseMetricsServer } from './base-metrics-server'
+import { retry, rwrap as wrapResult } from './utils'
 import IERC20Abi from './abi/IERC20.json'
-import { Err, retry } from './utils'
-import { CustomMetrics, ContractName, Address, TokenInstanceParams } from './types'
+import type { TokenMetrics, ContractName, Address, TokenInstanceParams } from './types'
 
 namespace Express {
   export interface Request {
     body: { token: Address; accounts: Address[] }
   }
 }
-export class TokenMetricsServer extends BaseMetricsServer {
+export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
   readonly multicall4!: ethers.Contract
   lastSyncBlock: number | undefined
 
   constructor(
-    metrics: CustomMetrics,
+    metrics: TokenMetrics,
     contractInstanceParams: Record<ContractName, TokenInstanceParams>,
     config: {
       port?: number
@@ -39,33 +39,31 @@ export class TokenMetricsServer extends BaseMetricsServer {
         const accounts = req.body?.accounts as Address[]
         // validate
         if (!ethers.utils.isAddress(token) || !accounts || !accounts.every(ethers.utils.isAddress)) {
-          throw Err({
-            status: 400,
-            message: 'invalid address. pls check input addresses',
-            err: req.body,
-          })
+          return resp.status(400).json({ message: 'invalid addresses. please check address' }).send()
         }
+
         // fetch
-        const balances = await this.multicall4.getTokenBalances(token, accounts).catch((err) => {
-          throw Err({ status: 400, message: `RPC error`, err })
-        })
+        // result.value is an array of balances
+        this.logger.debug(`fetching balances for token ${token}`)
+        const result = await wrapResult(
+          async () => await this.multicall4.getTokenBalances(token, accounts),
+          undefined,
+          this.logger
+        )
+        if (result.ok == false) {
+          return resp.status(400).json({ message: `got RPC error` }).send()
+        }
+
         resp
           .status(200)
           .json({
             message: 'ok',
             token: token,
-            balances: balances.map((balance) => balance.toString()),
+            balances: result.value.map((balance) => balance.toString()),
           })
           .send()
       } catch (error: any) {
-        this.logger.error(error)
-        // check if error is instance of Err
-        // we can get Err object from previous throw if an error is properly handled
-
-        if ('ok' in error) {
-          // maybe error is instance of Err
-          return resp.status(error.status).json({ message: error.message }).send()
-        }
+        this.logger.error(`unhandled error at /token`, error)
         resp.status(500).json({ message: 'unhandled error' }).send()
       }
     })
@@ -108,6 +106,8 @@ export class TokenMetricsServer extends BaseMetricsServer {
           this.metrics.unhandledErrors.labels(err.message).inc()
           return []
         })
+      this.logger.debug(`got ${transferEvents.length} Transfer events for token ${name}`)
+      this.metrics.tokenTransfer.labels(name, JSON.stringify({ from: '', to: '' })).inc(transferEvents.length)
     }
   }
 }
