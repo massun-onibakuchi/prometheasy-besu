@@ -81,7 +81,7 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
   }
 
   protected async internalMain(): Promise<void> {
-    this.logger.debug(`start internalMain... lastSyncBlock: ${this.lastSyncBlock ?? 'no sync yet'}`)
+    this.logger.info(`start internalMain... lastSyncBlock: ${this.lastSyncBlock ?? 'no sync yet'}`)
 
     // preconditions
     const [currentBlock, err] = await retry(() => this.provider.getBlockNumber(), 3, undefined)
@@ -98,7 +98,7 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
     // ethers-v5 doc https://docs.ethers.io/v5/api/providers/types/#providers-Filter
     // cheatsheets https://www.testingchain.xyz/posts/cheatsheets/ethers-js
     for (const [token_name, token] of Object.entries(this.contracts)) {
-      this.logger.debug(`fetching Transfer events for token ${token_name}`)
+      this.logger.info(`fetching Transfer events for token ${token_name}`)
       const transferEvents: ethers.Event[] | [] = await token
         .queryFilter('Transfer', fromBlock, currentBlock)
         .catch((err) => {
@@ -120,7 +120,7 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
           from == ethers.constants.AddressZero ? 'mint' : to == ethers.constants.AddressZero ? 'burn' : 'transfer'
         eventCounts[transfer_type] = eventCounts[transfer_type] + 1
       }
-
+      // increment metrics
       Object.entries(eventCounts).forEach(([transfer_type, count]) => {
         this.metrics.tokenTransfer.labels({ token_name, transfer_type }).inc(count)
       })
