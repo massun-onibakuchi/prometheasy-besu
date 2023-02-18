@@ -3,7 +3,6 @@ import { unreachable } from '@exporter/exporter-sdk'
 export const PORT = Number(process.env.PORT) || 3000
 export const LOG_LEVEL = process.env.LOG_LEVEL ?? 'info'
 
-export const ACCOUNTS_FILE_PATH = process.env.ACCOUNTS_FILE_PATH ?? unreachable('ACCOUNTS_FILE_PATH is not defined')
 export const TOKENS_FILE_PATH = process.env.TOKENS_FILE_PATH ?? unreachable('TOKENS_FILE_PATH is not defined')
 export const RPC_URL = process.env.RPC_URL ?? unreachable('RPC_URL is not defined')
 export const CHAIN_ID = Number(process.env.CHAIN_ID) || unreachable('CHAIN_ID is not defined')

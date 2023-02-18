@@ -1,9 +1,14 @@
 {
   "name": "perf-tester",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
   "license": "MIT",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "src/**/*",
+    "dist/**/*"
+  ],
   "dependencies": {
     "ethers": "5.7.2",
     "ts-node": "^10.9.1",

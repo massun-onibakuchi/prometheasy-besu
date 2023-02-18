@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "commonjs",
+    "moduleResolution": "node",
     "strict": true,
     "sourceMap": true,
     "esModuleInterop": true,
@@ -13,6 +14,11 @@
     "composite": true, // used for project references.
     "declaration": true, // used for project references.
   },
+  "references": [
+    {
+      "path": "./exporter/exporter-sdk/"
+    }
+  ],
   "exclude": [
     "node_modules",
     "dist"

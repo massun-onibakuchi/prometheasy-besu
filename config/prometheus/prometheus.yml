@@ -62,10 +62,17 @@ scrape_configs:
     dns_sd_configs:
       - names:
           - node
-        type: "A"
+        type: 'A'
         port: 9545
     relabel_configs:
       - source_labels: [__address__]
-        regex: "(.*)"
+        regex: '(.*)'
         target_label: instance
-        replacement: "node:$1"
+        replacement: 'node:$1'
+
+  # - job_name: 'token_metrics_exporter'
+  #   scrape_interval: 15s
+  #   metrics_path: /metrics
+  #   scheme: http
+  #   static_configs:
+  #     - targets: ['token_metrics_exporter:3000']

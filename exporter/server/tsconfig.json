@@ -1,16 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    // root relative to the exporter server folder
-    "baseUrl": "../../",
-    "paths": {
-      // This is the path to the dist folder of the exporter-sdk
-      // exporter server depends on the exporter-sdk
-      "@exporter/exporter-sdk": [
-        "exporter/exporter-sdk/dist/src"
-      ]
-    },
+    "outDir": "dist",
+    "rootDir": ".", // rootDir is the directory that contains the tsconfig.json file.
   },
   // composite option should be true because exporter server depends on the exporter-sdk
   "references": [
@@ -20,7 +12,6 @@
   ],
   "include": [
     "src/**/*",
-    "test/",
   ],
   "ts-node": {
     "files": true

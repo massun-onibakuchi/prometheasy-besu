@@ -95,10 +95,10 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
     // effects
     this.lastSyncBlock = currentBlock
 
-    this.logger.debug(`fetching Transfer events`)
     // ethers-v5 doc https://docs.ethers.io/v5/api/providers/types/#providers-Filter
     // cheatsheets https://www.testingchain.xyz/posts/cheatsheets/ethers-js
-    for (const [name, token] of Object.entries(this.contracts)) {
+    for (const [token_name, token] of Object.entries(this.contracts)) {
+      this.logger.debug(`fetching Transfer events for token ${token_name}`)
       const transferEvents: ethers.Event[] | [] = await token
         .queryFilter('Transfer', fromBlock, currentBlock)
         .catch((err) => {
@@ -106,9 +106,24 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
           this.metrics.unhandledErrors.labels(err.message).inc()
           return []
         })
-      this.logger.debug(`got ${transferEvents.length} Transfer events for token ${name}`)
+      this.logger.debug(`got ${transferEvents.length} Transfer events for token ${token_name}`)
       // TODO: collect metrics for each token
-      // this.metrics.tokenTransfer.labels(name, JSON.stringify({ from: '', to: '' })).inc(transferEvents.length)
+
+      // TODO: array#reduce
+      const eventCounts = { mint: 0, burn: 0, transfer: 0 }
+      for (const event of transferEvents) {
+        if (event.args == undefined) {
+          this.logger.error(`got Transfer event without args`)
+        }
+        const { from, to } = event.args as unknown as { from: Address; to: Address }
+        const transfer_type =
+          from == ethers.constants.AddressZero ? 'mint' : to == ethers.constants.AddressZero ? 'burn' : 'transfer'
+        eventCounts[transfer_type] = eventCounts[transfer_type] + 1
+      }
+
+      Object.entries(eventCounts).forEach(([transfer_type, count]) => {
+        this.metrics.tokenTransfer.labels({ token_name, transfer_type }).inc(count)
+      })
     }
   }
 }

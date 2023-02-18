@@ -33,10 +33,13 @@
     "test": "yarn workspace @exporter/exporter-sdk test && yarn workspace @exporter/server test",
     "lint:check": "yarn workspace @exporter/exporter-sdk lint:check && yarn workspace @exporter/server lint:check",
     "lint:fix": "yarn workspace @exporter/exporter-sdk lint:fix && yarn workspace @exporter/server lint:fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dev:exporter": "yarn workspace @exporter/server dev",
+    "start:exporter": "yarn workspace @exporter/server start"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
+    "@types/node": "^18.14.0",
     "@types/supertest": "^2.0.12",
     "chai": "^4.3.7",
     "husky": "^8.0.3",

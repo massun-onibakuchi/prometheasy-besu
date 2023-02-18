@@ -4,18 +4,23 @@
   "description": "",
   "repository": "git@github.com:massun-onibakuchi/prometheasy-besu.git",
   "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
-  "types": "./dist/src/index.d.ts",
   "scripts": {
     "chain": "hardhat node",
     "test": "exit 0",
     "lint:check": "prettier --check '**/*.{js,ts}'",
     "lint:fix": "prettier --write '**/*.{js,ts}'",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.json",
     "start": "node -r dotenv/config dist/src/index.js",
     "dev": "ts-node -r dotenv/config src/index.ts"
   },
   "license": "UNLICENSED",
   "private": true,
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*"
+  ],
   "dependencies": {
     "@exporter/exporter-sdk": "*",
     "ethers": "^5.7.2",

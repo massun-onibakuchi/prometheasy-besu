@@ -46,9 +46,9 @@ describe('Metrics', function () {
   describe('Metrics', function () {
     const metrics = {
       tokenTransfer: new Counter({
-        name: 'transfer',
-        help: 'token transfer',
-        labelNames: ['url', 'method', 'params', 'instance_hostname'],
+        name: 'token_transfer_events_count',
+        help: 'Number of transfers',
+        labelNames: ['token_name', 'transfer_type'],
       }),
       balances: new Counter({
         name: 'balance',
@@ -94,7 +94,7 @@ describe('Metrics', function () {
       // Verify that the registered metrics are served at `/`
       const response = await request(ms.server).get('/metrics').send()
       expect(response.status).eq(200)
-      expect(response.text).match(/transfer 2/)
+      expect(response.text).match(/token_transfer_events_count 2/)
       expect(response.text).match(/balance 100/)
     })
     it('shoud collect metrics when transfer event emitted', async function () {
@@ -108,7 +108,7 @@ describe('Metrics', function () {
       // assert
       const response = await request(ms.server).get('/metrics').send()
       expect(response.status).eq(200)
-      expect(response.text).match(/transfer 2/)
+      expect(response.text).match(/token_transfer_events_count 2/)
       // post-action
       await ms.stop()
     })

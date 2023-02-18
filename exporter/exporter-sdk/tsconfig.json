@@ -1,18 +1,13 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "dist",
+    "rootDir": ".",
   },
   "include": [
     "src/**/*",
     "src/**/*.json", // *.json files are not included by default
-    "test/",
-    "test/**/*",
-    "test/**/*.json", 
   ],
-  "ts-node": {
-    "files": true
-  },
   "files": [
     "package.json",
     "./hardhat.config.ts"
