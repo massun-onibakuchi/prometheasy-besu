@@ -11,6 +11,6 @@ export const logger = pino({
     colorize: true,
     translateTime: true,
   },
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL || 'debug',
   timestamp: true,
 })

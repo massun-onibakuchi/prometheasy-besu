@@ -134,7 +134,7 @@ export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
         await this.mainPromise
       } catch (err: any) {
         this.metrics.unhandledErrors.labels(err.message).inc()
-        logger.error('caught an unhandled exception', err)
+        logger.error(err, 'caught an unhandled exception')
       }
       this.timer = setTimeout(doLoop, this.loopIntervalMs)
     }

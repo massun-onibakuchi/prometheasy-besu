@@ -39,6 +39,7 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
         const accounts = req.body?.accounts as Address[]
         // validate
         if (!ethers.utils.isAddress(token) || !accounts || !accounts.every(ethers.utils.isAddress)) {
+          this.logger.warn({ token, accounts, reason: 'invalid  address' }, `/token: resp with status 400`)
           return resp.status(400).json({ message: 'invalid addresses. please check address' }).send()
         }
 
@@ -51,9 +52,11 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
           this.logger
         )
         if (result.ok == false) {
+          this.logger.warn({ token, accounts, reason: 'rpc error' }, `/token: resp with status 400`)
           return resp.status(400).json({ message: `got RPC error` }).send()
         }
 
+        this.logger.info('/token resp with status 200')
         resp
           .status(200)
           .json({
@@ -63,7 +66,7 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
           })
           .send()
       } catch (error: any) {
-        this.logger.error(`unhandled error at /token`, error)
+        this.logger.error(error, `unhandled error at /token`)
         resp.status(500).json({ message: 'unhandled error' }).send()
       }
     })
@@ -88,7 +91,7 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
     const fromBlock = this.lastSyncBlock ?? currentBlock
 
     if (err) {
-      this.logger.error(`got unexpected RPC error: getBlockNumber`, err)
+      this.logger.error(err, `got unexpected RPC error: getBlockNumber`)
       this.metrics.unhandledErrors.labels(err.message).inc()
     }
 
@@ -100,9 +103,9 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
     for (const [token_name, token] of Object.entries(this.contracts)) {
       this.logger.info(`fetching Transfer events for token ${token_name}`)
       const transferEvents: ethers.Event[] | [] = await token
-        .queryFilter('Transfer', fromBlock, currentBlock)
+        .queryFilter(token.filters.Transfer(), fromBlock, currentBlock)
         .catch((err) => {
-          this.logger.error(`got an unhandled RPC error`, err)
+          this.logger.error(err, `got an unhandled RPC error`)
           this.metrics.unhandledErrors.labels(err.message).inc()
           return []
         })

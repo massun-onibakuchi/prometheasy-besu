@@ -25,7 +25,7 @@ export async function rwrap<T = void, E = void>(
     const value = await func()
     return Ok(value)
   } catch (error: any) {
-    if (logger) logger.error(error)
+    if (logger) logger.error(error, 'rwrap error')
     return Err(onError)
   }
 }

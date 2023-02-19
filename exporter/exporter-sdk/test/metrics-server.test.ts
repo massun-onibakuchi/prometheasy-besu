@@ -58,6 +58,7 @@ describe('Metrics', function () {
       unhandledErrors: new Counter({
         name: 'unhandled_errors',
         help: 'Unhandled errors',
+        labelNames: ['error_message'],
       }),
     }
     beforeEach(async function () {
@@ -148,7 +149,7 @@ describe('Metrics', function () {
       expect(response.status).eq(400)
       expect(response.body.message).match(/RPC error/)
     })
-    it('/token should catch error when token is not a contract', async function () {
+    it('/token should catch error when address is invalid format', async function () {
       // arrange
       ms.startServer()
       // act
@@ -161,7 +162,7 @@ describe('Metrics', function () {
           accounts: [owner.address, user.address],
         })
       expect(response.status).eq(400)
-      expect(response.body.message).match(/invalid/)
+      expect(response.body.message).match(/invalid address/)
     })
   })
 })
