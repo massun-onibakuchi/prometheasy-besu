@@ -7,6 +7,9 @@ To see the results of the test, you can use the Grafana dashboard.
 
 Sends ERC20 transfer transactions every configurable time interval.
 
+Script deploys a new mitable simple ERC20 token contract and mint some tokens.
+Repeatedly sends tokens to a generated address.
+
 1.  Install dependencies: `yarn install`
 2.  Set up the environment variables:
 
