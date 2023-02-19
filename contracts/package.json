@@ -1,5 +1,5 @@
 {
-  "name": "hardhat-foundry",
+  "name": "sol-contracts",
   "version": "0.0.1",
   "description": "Forkable Hardhat & Foundry template",
   "scripts": {
