@@ -1,3 +1,4 @@
+# Taken and modified from: https://github.com/ConsenSys/quorum-dev-quickstart
 # Docker Compose file for deploying a Hyperledger Besu network
 version: "3.6"
 
@@ -10,21 +11,21 @@ x-besu-def: &besu-def # Restart the container if it fails
   env_file:
     - ./.env
   environment:
-    - BESU_ENV=${BESU_ENV:? "BESU_ENV is not set"}
+    - BESU_CONFIG=${BESU_CONFIG:? "BESU_CONFIG is not set"}
   # Specify the entrypoint command
   entrypoint:
     - /bin/bash
     - -c
     - |
       # Log Besu version and help
-      echo "Starting Besu node... BESU_ENV=${BESU_ENV}"
+      echo "Starting Besu node... BESU_CONFIG=${BESU_CONFIG}"
       echo "Besu version::>>" && besu --version
       besu validate-config --config-file=/config/config.toml
       # Start Besu node with specified options
       besu \
       --config-file=/config/config.toml \
       --p2p-host=$$(hostname -i) \
-      --rpc-http-api=EEA,WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,PERM \
+      --rpc-http-api=WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,PERM \
       ${BESU_OPTS}
 # List of services
 services:
@@ -42,9 +43,15 @@ services:
       - "consensus=besu"
     # Map host directories to container directories
     volumes:
-      - ./config/besu/${BESU_ENV}:/config
-      - ./config/keys/${BESU_ENV}/validator1:/opt/besu/keys
-      - ./database/besu/${BESU_ENV}/validator1/:/opt/besu/database
+      - ./config/besu/${BESU_CONFIG}:/config
+      - ./config/keys/${BESU_CONFIG}/validator1:/opt/besu/keys
+    # Bug
+    # https://github.com/hyperledger/besu/issues/4292
+    # https://besu.hyperledger.org/en/stable/public-networks/get-started/install/run-docker-image/#start-besu
+    # To persist the database
+    # - type: volume
+    #   source: besu-database
+    #   target: /var/lib/besu
     # Connect to the specified network
     networks:
       besu-network:
@@ -64,9 +71,8 @@ services:
       - "consensus=besu"
     # Map host directories to container directories
     volumes:
-      - ./config/besu/${BESU_ENV}:/config
-      - ./config/keys/${BESU_ENV}/validator2:/opt/besu/keys
-      - ./database/besu/${BESU_ENV}/validator2:/opt/besu/database
+      - ./config/besu/${BESU_CONFIG}:/config
+      - ./config/keys/${BESU_CONFIG}/validator2:/opt/besu/keys
     depends_on:
       - validator1
     networks:
@@ -81,9 +87,8 @@ services:
     labels:
       - "consensus=besu"
     volumes:
-      - ./config/besu/${BESU_ENV}:/config
-      - ./config/keys/${BESU_ENV}/validator3:/opt/besu/keys
-      - ./database/besu/${BESU_ENV}/validator3/:/opt/besu/database
+      - ./config/besu/${BESU_CONFIG}:/config
+      - ./config/keys/${BESU_CONFIG}/validator3:/opt/besu/keys
     depends_on:
       - validator1
     networks:
@@ -93,9 +98,8 @@ services:
   rpcnode:
     <<: *besu-def
     volumes:
-      - ./config/besu/${BESU_ENV}:/config
-      - ./config/keys/${BESU_ENV}/rpcnode:/opt/besu/keys
-      - ./database/besu/${BESU_ENV}/rpcnode:/opt/besu/database
+      - ./config/besu/${BESU_CONFIG}:/config
+      - ./config/keys/${BESU_CONFIG}/rpcnode:/opt/besu/keys
     depends_on:
       - validator1
     ports:
@@ -132,7 +136,9 @@ services:
       besu-network:
         ipv4_address: 172.16.239.33
 
+# Named volumes
 volumes:
+  besu-database:
   prometheus:
   grafana:
 

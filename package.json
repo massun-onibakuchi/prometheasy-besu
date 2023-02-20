@@ -6,6 +6,7 @@
   "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
   "license": "UNLICENSED",
   "workspaces": [
+    "chain",
     "exporter/*",
     "perf-tester",
     "contracts"
