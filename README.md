@@ -40,6 +40,16 @@ You have to run these commands on each node.
 
 ### Setup genesis.json
 
+You have to generate a public key from a private key with the following command:
+
+```
+docker run -it --rm -v $(pwd)/config/keys/production:/opt/besu/config/keys/production hyperledger/besu:<BASU_IMAGE_VERSION>
+# and attach to the container
+docker attach <container id>
+besu --data-path=./config/keys/production/<rpcnode or validtor1...> public-key export
+# exit the container
+```
+
 And then you have to setup genesis.json and config.toml files in `config/besu/production/` folder for all besu nodes.
 
 QBFT requres `extraData` field in `genesis.json` with the following format:
@@ -76,14 +86,14 @@ The Prometheus server will scrape the Reth node and the Grafana server will disp
 ## TODO
 
 - [ ] トークン移転などのイベントを取得し、Grafana で可視化する。Prometeus exporter の作成
-- [ ] Besu のデータを永続化する
+  - [x] ユニットテスト
+  - [ ] Grafana で可視化確認
+- [ ] Besu のデータを永続化する (Besu のバグっぽい)
+- [ ] CI/CD の設定
+- [ ] ドキュメントの整備 WIP
+- [x] project root dir での`yarn` script のコマンドが長くなりすぎるので yarn v2 にアプデして yarn workspaces foreach の plugin 入れるか,`npm run workspaces`を使う
+- [ ] `@exporter/exporter-sdk`と`@exporter/server`のユーティリティ系モジュールの切り出し
 
 ## Acknowledgements
 
-The Prometheus + Grafana docker-compose stack is taken from https://github.com/vegasbrianc/prometheus
-
-https://besu.hyperledger.org/en/stable/private-networks/tutorials/quickstart/#4-update-prometheus-configuration
-
-besu --data-path=<node data path> public-key export --node-private-key-file=/home/me/me_node/myPrivateKey --to=/home/me/me_project/not_precious_pub_key --ec-curve=secp256k1
-
-besu --data-path=<node data path> public-key export-address --node-private-key-file=/home/me/me_node/myPrivateKey --to=/home/me/me_project/me_node_address --ec-curve=secp256k1
+The Prometheus + Grafana docker-compose stack is taken from : https://besu.hyperledger.org/en/stable/private-networks/tutorials/quickstart/#4-update-prometheus-configuration

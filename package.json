@@ -8,7 +8,7 @@
   "workspaces": [
     "exporter/*",
     "perf-tester",
-    "sol-contracts"
+    "contracts"
   ],
   "nohoist": [
     "**/typechain/*",
@@ -29,13 +29,20 @@
     "*.ts": "prettier --write"
   },
   "scripts": {
-    "=======": "========= HENHANCEMENT: yarn workspaces foreach =======",
-    "build": "yarn workspace @exporter/exporter-sdk build && yarn workspace @exporter/server build",
-    "test": "yarn workspace @exporter/exporter-sdk test && yarn workspace @exporter/server test",
-    "lint:check": "yarn workspace @exporter/exporter-sdk lint:check && yarn workspace @exporter/server lint:check",
-    "lint:fix": "yarn workspace @exporter/exporter-sdk lint:fix && yarn workspace @exporter/server lint:fix",
     "prepare": "husky install",
+    "===LINT===": "echo 'Run npm scripts with all workspaces'",
+    "lint:check": "npm run lint:check --workspaces --if-presents",
+    "lint:fix": "npm run lint:fix --workspaces --if-presents",
+    "===TEST===": "========================================",
+    "test": "npm run test --workspaces --if-presents",
+    "===BUILD===": "========================================",
+    "b": "npm run build",
+    "build": "npm run build --workspaces --if-presents",
+    "build:exporter": "yarn workspace @exporter/server build",
+    "build:sol": "yarn workspace contracts build",
+    "===DEV===": "========================================",
     "dev:exporter": "yarn workspace @exporter/server dev",
+    "===START===": "========================================",
     "start:exporter": "yarn workspace @exporter/server start"
   },
   "devDependencies": {

@@ -1,17 +1,18 @@
 {
-  "name": "sol-contracts",
+  "name": "contracts",
   "version": "0.0.1",
   "description": "Forkable Hardhat & Foundry template",
   "scripts": {
     "build": "forge build",
     "build:hh": "hardhat compile",
     "build:forge": "forge build",
-    "test": "hardhat test",
+    "test": "hardhat test && forge test -vvv",
+    "test:hh": "hardhat test",
     "test:forge": "forge test -vvv",
     "doc": "forge doc",
     "type": "hardhat typechain",
-    "lint:check": "prettier --check '**.{sol,js,ts}'",
-    "lint:fix": "prettier --write '**.{sol,js,ts}'"
+    "lint:check": "prettier --check '*/**/*.{sol,js,ts}'",
+    "lint:fix": "prettier --write '*/**/*.{sol,js,ts}'"
   },
   "repository": {
     "type": "git",
