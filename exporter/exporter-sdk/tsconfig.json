@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.json", // *.json files are not included by default
+  ],
+  "files": [
+    "package.json",
+    "./hardhat.config.ts"
+  ]
+}

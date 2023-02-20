@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "preserveSymlinks": true,
+    "noImplicitAny": false,
+    "declarationMap": true,
+    //  See https://www.typescriptlang.org/docs/handbook/project-references.html
+    "composite": true, // used for project references.
+    "declaration": true, // used for project references.
+  },
+  "references": [
+    {
+      "path": "./exporter/exporter-sdk/"
+    }
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

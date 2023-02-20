@@ -1,0 +1,47 @@
+version: "3.6"
+services:
+  besu:
+    image: hyperledger/besu:${BESU_IMAGE_VERSION:-latest}
+    ports:
+      # mapping <Host Port>:<Container Port>
+      - 8545:8545
+      - 30303:30303
+      - 9545:9545
+    env_file:
+      - ./.env
+    environment:
+      - BESU_CONFIG=${BESU_CONFIG:? "BESU_CONFIG is not set"}
+    volumes:
+      - type: bind
+        source: ./config/besu/${BESU_CONFIG}
+        target: /config
+      - type: bind
+        source: ./config/keys/${BESU_CONFIG}/rpcnode
+        target: /opt/besu/keys
+    # Bug
+    # https://github.com/hyperledger/besu/issues/4292
+    # https://besu.hyperledger.org/en/stable/public-networks/get-started/install/run-docker-image/#start-besu
+    # To persist the database
+    # - type: volume
+    #   source: besu-database
+    #   target: /var/lib/besu
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        # Log Besu version and help
+        echo "Starting Besu node... BESU_CONFIG=${BESU_CONFIG}"
+        echo "Besu version::>>" && besu --version
+        echo "Besu --help :>>" && besu --help
+        besu validate-config --config-file=/config/config.toml
+        # Start Besu node with specified options
+        besu \
+        --config-file=/config/config.toml \
+        --p2p-host=$$(hostname -i) \
+        --rpc-http-api=WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,PERM \
+        ${BESU_OPTS}
+    # To override a configuration
+    # BESU_OPTS="--node-private-key-file=keys/key --rpc-http-enabled=false --rpc-http-port=8546" docker-compose up
+
+# volumes:
+#   besu-database:

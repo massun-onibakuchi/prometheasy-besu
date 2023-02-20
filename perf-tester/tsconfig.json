@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.json", // *.json files are not included by default
+    "test/",
+  ],
+  "ts-node": {
+    "files": true
+  },
+  "files": [
+    "package.json",
+  ]
+}

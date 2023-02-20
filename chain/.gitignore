@@ -18,4 +18,4 @@ nodekey
 !**/test/*/nodekey
 
 node_modules
-.envs
+.env

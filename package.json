@@ -1,13 +1,61 @@
 {
-  "name": "@consensys-software/generate_node_details",
+  "name": "besu-template",
   "version": "1.0.0",
-  "description": "Example script to create nodekeys and address for a Quorum (Besu or GoQuorum) node",
-  "scripts": {},
-  "license": "Apache-2.0",
+  "main": "index.js",
+  "repository": "git@github.com:massun-onibakuchi/prometheasy-besu.git",
+  "author": "Massun onibakuchi (https://github.com/massun-onibakuchi)",
+  "license": "UNLICENSED",
+  "workspaces": [
+    "chain",
+    "exporter/*",
+    "perf-tester",
+    "contracts"
+  ],
+  "nohoist": [
+    "**/typechain/*",
+    "**/@typechain/*"
+  ],
+  "private": true,
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=7.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "precommit"
+    }
+  },
+  "lint-staged": {
+    "*.js": "prettier --write",
+    "*.ts": "prettier --write"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "===LINT===": "echo 'Run npm scripts with all workspaces'",
+    "lint:check": "npm run lint:check --workspaces --if-presents",
+    "lint:fix": "npm run lint:fix --workspaces --if-presents",
+    "===TEST===": "========================================",
+    "test": "npm run test --workspaces --if-presents",
+    "===BUILD===": "========================================",
+    "b": "npm run build",
+    "build": "npm run build --workspaces --if-presents",
+    "build:exporter": "yarn workspace @exporter/server build",
+    "build:sol": "yarn workspace contracts build",
+    "===DEV===": "========================================",
+    "dev:exporter": "yarn workspace @exporter/server dev",
+    "===START===": "========================================",
+    "start:exporter": "yarn workspace @exporter/server start"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.14.0",
+    "@types/supertest": "^2.0.12",
+    "chai": "^4.3.7",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
+    "prettier": "^2.8.4"
+  },
   "dependencies": {
-    "secp256k1": "^4.0.0",
-    "keccak": "^3.0.0",
-    "ethereumjs-wallet": "^1.0.2",
-    "yargs": "^17.2.1"
+    "dotenv": "^16.0.3"
   }
 }

@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".", // rootDir is the directory that contains the tsconfig.json file.
+  },
+  // composite option should be true because exporter server depends on the exporter-sdk
+  "references": [
+    {
+      "path": "../exporter-sdk"
+    }
+  ],
+  "include": [
+    "src/**/*",
+  ],
+  "ts-node": {
+    "files": true
+  },
+  "files": [
+    "package.json",
+    "./hardhat.config.ts"
+  ]
+}
