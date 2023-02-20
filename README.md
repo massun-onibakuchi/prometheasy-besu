@@ -1,5 +1,17 @@
 # prometheasy-besu
 
+**Customized Ethereum Blockchain Monorepo for Besu + Prometheus + Grafana + Solidity**
+
+- [README - Configs for Besu, Prometheus and Grafana](./config/)
+- [README - Solidity contracts](./contracts/)
+  - [Access controllable Token Implementations](https://github.com/shinonome-inc/st-sol/): Opinionated Template for access controllable Token on EVM based chain
+- [Prometheus Exporter](./exporter/README.md): Export custom metrics from Besu node to Prometheus
+  - [README - Exporter SDK](./exporter/exporter-sdk/README.md)
+  - [README - Exporter Server](./exporter/server/README.md)
+- [README - Performance Test Util](./perf-tester/README.md): Performance test util scripts, sends transactions with configured interval
+
+# Run Besu with Prometheus + Grafana
+
 Run the latest [Besu](https://github.com/hyperledger/besu) node and monitor it with a Prometheus-powered Grafana dashboard.
 
 ![dashboard](dashboard-screenshot.png)
@@ -88,7 +100,7 @@ The Prometheus server will scrape the Reth node and the Grafana server will disp
 - [ ] トークン移転などのイベントを取得し、Grafana で可視化する。Prometeus exporter の作成
   - [x] ユニットテスト
   - [ ] Grafana で可視化確認
-- [ ] Besu のデータを永続化する (Besu のバグっぽい)
+- [ ] Docker の Besu のデータを永続化する (Besu のバグでデフォルト以外のデータパスをマウントできないっぽい)
 - [ ] CI/CD の設定
 - [ ] ドキュメントの整備 WIP
 - [x] project root dir での`yarn` script のコマンドが長くなりすぎるので yarn v2 にアプデして yarn workspaces foreach の plugin 入れるか,`npm run workspaces`を使う
