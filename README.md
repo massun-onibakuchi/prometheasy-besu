@@ -2,15 +2,15 @@
 
 **Customized Ethereum Blockchain Monorepo for Besu + Prometheus + Grafana + Solidity**
 
-- [README - Chain stacks (Besu + Prometeus + Grafana)](./chain/README.md)
+- [README - Chain stacks (Besu + Prometeus + Grafana)](./chain/README.md): `chain` package
   - [README - Configs for Besu, Prometheus and Grafana](./chain/config/README.md)
-- [README - Solidity contracts](./contracts/README.md): Solidity contracts template
+- [README - Solidity contracts](./contracts/README.md): Solidity contracts template `contracts` package
   - See also [Access controllable Token Implementations](https://github.com/shinonome-inc/st-sol/): Opinionated Template for access controllable Token on EVM based chain
 - Prometheus Exporter: Export custom metrics from Besu node to Prometheus
-  - [README - Exporter SDK](./exporter/exporter-sdk/README.md)
-  - [README - Exporter Server](./exporter/server/README.md)
-- [README - Performance Test Util](./perf-tester/README.md): Performance test util scripts, sends transactions with configured interval
-- [README - Common TypeScript utilities](./common-ts/README.md): Common TypeScript utilities
+  - [README - Exporter SDK](./exporter/exporter-sdk/README.md) : SDK for exporting custom metrics `@exporter/exporter-sdk`
+  - [README - Exporter Server](./exporter/server/README.md) : Server for exporting custom metrics `@exporter/server`
+- [README - Performance Test Util](./perf-tester/README.md): Performance test util scripts, sends transactions with configured interval `perf-tester` package
+- [README - Common TypeScript utilities](./common-ts/README.md): Common TypeScript utilities `@prometheasy-besu/common-ts`
 
 ### Requirements
 
@@ -44,6 +44,10 @@ yarn test   # run all tests
 yarn lint:check   # run all linters
 yarn lint:fix   # run all linters
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## TODO
 

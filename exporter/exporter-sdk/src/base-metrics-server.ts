@@ -1,7 +1,7 @@
 import express, { Express } from 'express'
 import { Registry, collectDefaultMetrics } from 'prom-client'
 import { ethers } from 'ethers'
-import { createLogger } from 'common-ts'
+import { createLogger } from '@prometheasy-besu/common-ts'
 import Multicall4ABI from './abi/Multicall4.json'
 import type { BaseMetrics, ContractName, ContractInstanceParams, Address } from './types'
 import type pino from 'pino'

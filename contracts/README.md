@@ -165,6 +165,19 @@ cast run <txhash> --rpc-url <rpc-url>
 
 See [deployment](./deployment.md)
 
+## Contributing
+
+When making a pull request, ensure that:
+
+- All tests pass.
+- Code coverage remains at `x`% (coverage tests must currently be written in Foundry).
+- All new code adheres to the style guide:
+  - All lint checks pass.
+  - Code is thoroughly commented with natspec where relevant.
+- If making a change to the contracts:
+  - New tests (ideally via foundry) are included for all new features or code paths.
+- A descriptive summary of the PR has been provided.
+
 ## Resources
 
 For more infomation on how to use Foundry features, refer to:

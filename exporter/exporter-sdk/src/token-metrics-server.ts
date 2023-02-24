@@ -1,7 +1,7 @@
 import { BigNumber, ethers } from 'ethers'
 import express from 'express'
 import { BaseMetricsServer } from './base-metrics-server'
-import { Result, retry, rwrap as wrapResult } from 'common-ts'
+import { Result, retry, rwrap as wrapResult } from '@prometheasy-besu/common-ts'
 import IERC20Abi from './abi/IERC20.json'
 import type { TokenMetrics, ContractName, Address, TokenInstanceParams } from './types'
 

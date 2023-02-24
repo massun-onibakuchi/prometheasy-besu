@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { TokenMetricsServer } from '@exporter/exporter-sdk'
 import { Counter } from 'prom-client'
-import { createLogger } from 'common-ts'
+import { createLogger } from '@prometheasy-besu/common-ts'
 
 import { CHAIN_ID, TOKENS_FILE_PATH, MULTICALL4, PORT, RPC_URL, LOG_LEVEL } from './config'
 
