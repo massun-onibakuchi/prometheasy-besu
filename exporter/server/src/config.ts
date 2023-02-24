@@ -1,6 +1,6 @@
 import { unreachable } from '@prometheasy-besu/common-ts'
 
-export const PORT = Number(process.env.PORT) || 3000
+export const PORT = Number(process.env.PORT) || 3030
 export const LOG_LEVEL = process.env.LOG_LEVEL ?? 'info'
 
 export const TOKENS_FILE_PATH = process.env.TOKENS_FILE_PATH ?? unreachable('TOKENS_FILE_PATH is not defined')

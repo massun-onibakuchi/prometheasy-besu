@@ -75,4 +75,6 @@ scrape_configs:
   #   metrics_path: /metrics
   #   scheme: http
   #   static_configs:
-  #     - targets: ['token_metrics_exporter:3000']
+  #     # NOTE: host.docker.internal == IP of your host machine
+  #     # For more info search `docker access host machine from container`
+  #     - targets: ['host.docker.internal:3030']
