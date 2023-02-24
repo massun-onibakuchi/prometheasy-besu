@@ -56,7 +56,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
   - [ ] Grafana で可視化確認
 - [ ] Docker の Besu のデータを永続化する (Besu のバグでデフォルト以外のデータパスをマウントできないっぽい)
 - [x] CI の設定
-- [x] SlitherのCIが落ちるので直す
+  - [x] SlitherのCIが落ちるので直す
 ~~- [ ] CD の設定~~
 - [ ] ドキュメントの整備 WIP
   - [ ] Besu node
