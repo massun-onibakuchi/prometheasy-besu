@@ -56,8 +56,8 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
   - [ ] Grafana で可視化確認
 - [ ] Docker の Besu のデータを永続化する (Besu のバグでデフォルト以外のデータパスをマウントできないっぽい)
 - [x] CI の設定
-- [ ] SlitherのCIが落ちる
-- [ ] CD の設定
+- [x] SlitherのCIが落ちるので直す
+~~- [ ] CD の設定~~
 - [ ] ドキュメントの整備 WIP
   - [ ] Besu node
 - [x] project root dir での`yarn` script のコマンドが長くなりすぎるので yarn v2 にアプデして yarn workspaces foreach の plugin 入れるか,`npm run workspaces`を使う
