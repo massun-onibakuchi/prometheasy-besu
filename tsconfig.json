@@ -17,6 +17,9 @@
   "references": [
     {
       "path": "./exporter/exporter-sdk/"
+    },
+    {
+      "path": "./common-ts/"
     }
   ],
   "exclude": [

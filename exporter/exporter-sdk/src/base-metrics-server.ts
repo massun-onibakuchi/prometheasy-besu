@@ -1,7 +1,7 @@
 import express, { Express } from 'express'
 import { Registry, collectDefaultMetrics } from 'prom-client'
 import { ethers } from 'ethers'
-import { logger } from './logger'
+import { createLogger } from 'common-ts'
 import Multicall4ABI from './abi/Multicall4.json'
 import type { BaseMetrics, ContractName, ContractInstanceParams, Address } from './types'
 import type pino from 'pino'
@@ -14,7 +14,7 @@ export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
   readonly loopIntervalMs: number = 10000 // default loop interval in ms
   readonly metrics: CustomMetrics
   readonly multicall4: ethers.Contract | undefined
-  readonly logger: typeof logger
+  readonly logger: pino.Logger
   contracts: Record<ContractName, ethers.Contract> = {}
   timer: NodeJS.Timeout | undefined
   mainPromise: Promise<void> | undefined
@@ -30,12 +30,17 @@ export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
       chainId: number
       multicall4?: Address
       logger?: pino.Logger
+      logLevel?: string
     }
   ) {
     this.metrics = metrics
     this.port = config?.port ?? this.port
     this.loopIntervalMs = config?.loopIntervalMs ?? this.loopIntervalMs
-    this.logger = config?.logger ?? logger
+
+    this.logger = config?.logger ?? createLogger(config?.logLevel)
+    if (config?.logger && config?.logLevel) {
+      this.logger.warn('incompatible options: logLevel and logger. Ignoring logLevel. Use logger instead.')
+    }
 
     this.logger.info(`setting up provider ${config.rpcUrl} chainId: ${config.chainId}`)
     this.provider = new ethers.providers.StaticJsonRpcProvider(config.rpcUrl, config.chainId)
@@ -134,7 +139,7 @@ export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
         await this.mainPromise
       } catch (err: any) {
         this.metrics.unhandledErrors.labels(err.message).inc()
-        logger.error(err, 'caught an unhandled exception')
+        this.logger.error(err, 'caught an unhandled exception')
       }
       this.timer = setTimeout(doLoop, this.loopIntervalMs)
     }

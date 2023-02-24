@@ -5,11 +5,14 @@
     "rootDir": ".", // rootDir is the directory that contains the tsconfig.json file.
   },
   // composite option should be true because exporter server depends on the exporter-sdk
-  "references": [
-    {
-      "path": "../exporter-sdk"
-    }
-  ],
+  // "references": [
+  //   {
+  //     "path": "../exporter-sdk"
+  //   },
+  //   {
+  //     "path": "../../common-ts"
+  //   }
+  // ],
   "include": [
     "src/**/*",
   ],

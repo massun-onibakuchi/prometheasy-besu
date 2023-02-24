@@ -10,6 +10,7 @@
   - [README - Exporter SDK](./exporter/exporter-sdk/README.md)
   - [README - Exporter Server](./exporter/server/README.md)
 - [README - Performance Test Util](./perf-tester/README.md): Performance test util scripts, sends transactions with configured interval
+- [README - Common TypeScript utilities](./common-ts/README.md): Common TypeScript utilities
 
 ### Requirements
 
@@ -51,6 +52,7 @@ yarn lint:fix   # run all linters
   - [ ] Grafana で可視化確認
 - [ ] Docker の Besu のデータを永続化する (Besu のバグでデフォルト以外のデータパスをマウントできないっぽい)
 - [ ] CI/CD の設定
-- [x] ドキュメントの整備 WIP
+- [ ] ドキュメントの整備 WIP
+  - [ ] Besu node の起動
 - [x] project root dir での`yarn` script のコマンドが長くなりすぎるので yarn v2 にアプデして yarn workspaces foreach の plugin 入れるか,`npm run workspaces`を使う
-- [ ] `@exporter/exporter-sdk`と`@exporter/server`のユーティリティ系モジュールの切り出し
+- [x] `@exporter/exporter-sdk`と`@exporter/server`のユーティリティ系モジュールの切り出し

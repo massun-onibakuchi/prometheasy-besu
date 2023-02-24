@@ -19,6 +19,7 @@
     "lint:fix": "prettier --write '**/*.{js,ts}'",
     "dev": "ts-node src/index.ts",
     "start": "node -r dotenv/config dist/index.js",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "exit 0"
   }
 }

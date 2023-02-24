@@ -3,5 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Massun onibakuchi <etherdao0x00@gmail.com> (https://github.com/massun-onibakuchi)",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "exit 0",
+    "build": "exit 0",
+    "lint:fix": "exit 0",
+    "lint:check": "exit 0"
+  }
 }

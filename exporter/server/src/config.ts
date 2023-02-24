@@ -1,4 +1,4 @@
-import { unreachable } from '@exporter/exporter-sdk'
+import { unreachable } from 'common-ts'
 
 export const PORT = Number(process.env.PORT) || 3000
 export const LOG_LEVEL = process.env.LOG_LEVEL ?? 'info'
