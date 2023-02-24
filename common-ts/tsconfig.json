@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".", // rootDir is the directory that contains the tsconfig.json file.
+  },
+  "include": [
+    "src/**/*",
+  ],
+  "files": [
+    "package.json"
+  ]
+}

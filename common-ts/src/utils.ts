@@ -15,7 +15,6 @@ export const unreachable = (msg?: string) => {
 /// If the function throws, return Err.
 /// If the function succeeds, return Ok.
 /// If logger is provided, log the error.
-/// @notice
 export async function rwrap<T = void, E = void>(
   func: () => Promise<T> | T,
   onError: E,

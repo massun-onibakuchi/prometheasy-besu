@@ -1,9 +1,9 @@
 import fs from 'fs'
 import { TokenMetricsServer } from '@exporter/exporter-sdk'
 import { Counter } from 'prom-client'
-import { logger } from './logger'
+import { createLogger } from 'common-ts'
 
-import { CHAIN_ID, TOKENS_FILE_PATH, MULTICALL4, PORT, RPC_URL } from './config'
+import { CHAIN_ID, TOKENS_FILE_PATH, MULTICALL4, PORT, RPC_URL, LOG_LEVEL } from './config'
 
 const metrics = {
   tokenTransfer: new Counter({
@@ -18,6 +18,7 @@ const metrics = {
   }),
 }
 
+const logger = createLogger(LOG_LEVEL)
 if (require.main === module) {
   const tokenAddresses = JSON.parse(fs.readFileSync(TOKENS_FILE_PATH, 'utf8'))
   const service = new TokenMetricsServer(metrics, tokenAddresses, {
