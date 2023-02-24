@@ -1,0 +1,33 @@
+# see https://github.com/marketplace/actions/slither-action
+name: Slither Analysis
+on: [push]
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - run: git config --global --add safe.directory /github/workspace
+
+      - name: Run Slither
+        uses: crytic/slither-action@v0.3.0
+        id: slither
+        with:
+          sarif: results.sarif
+          fail-on: none
+          node-version: 16
+          target: contracts
+          slither-config: contracts/slither.config.json
+      # To enable the upload of the SARIF file, repo must be
+      # either public or GitHub Enterprise Cloud.
+      # Otherwise, this feature is not available, I guess.
+      #
+      # And then you need to enable the feature in the repo settings.
+      # Grant Read and write permissions to the workflow on GitHub
+      # Settings > Actions > General > Workflow permissions
+      # - name: Upload SARIF file
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: ${{ steps.slither.outputs.sarif }}

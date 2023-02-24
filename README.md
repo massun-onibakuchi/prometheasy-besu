@@ -25,7 +25,7 @@ Install dependencies
 
 ```bash
 yarn
-forge install
+cd contracts && forge install
 ```
 
 Each package has its own README. See the following links for more details.
@@ -55,8 +55,10 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
   - [x] ユニットテスト
   - [ ] Grafana で可視化確認
 - [ ] Docker の Besu のデータを永続化する (Besu のバグでデフォルト以外のデータパスをマウントできないっぽい)
-- [ ] CI/CD の設定
+- [x] CI の設定
+- [ ] SlitherのCIが落ちる
+- [ ] CD の設定
 - [ ] ドキュメントの整備 WIP
-  - [ ] Besu node の起動
+  - [ ] Besu node
 - [x] project root dir での`yarn` script のコマンドが長くなりすぎるので yarn v2 にアプデして yarn workspaces foreach の plugin 入れるか,`npm run workspaces`を使う
 - [x] `@exporter/exporter-sdk`と`@exporter/server`のユーティリティ系モジュールの切り出し

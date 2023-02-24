@@ -37,6 +37,9 @@
     "lint:fix": "npm run lint:fix --workspaces --if-presents",
     "===TEST===": "========================================",
     "test": "npm run test --workspaces --if-presents",
+    "test:sol": "yarn workspace contracts test",
+    "test:exporter": "yarn workspace @exporter/server test && yarn workspace @exporter/exporter-sdk test",
+    "test:ts": "yarn workspace @prometheasy-besu/common-ts test && yarn test:exporter && yarn workspace perf-tester test",
     "===BUILD===": "========================================",
     "b": "npm run build",
     "build": "npm run build --workspaces --if-presents",
@@ -45,7 +48,8 @@
     "===DEV===": "========================================",
     "dev:exporter": "yarn workspace @exporter/server dev",
     "===START===": "========================================",
-    "start:exporter": "yarn workspace @exporter/server start"
+    "start:exporter": "yarn workspace @exporter/server start",
+    "coverage:sol": "forge coverage --config-path=./contracts/foundry.toml"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
