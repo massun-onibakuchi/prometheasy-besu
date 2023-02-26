@@ -40,7 +40,11 @@ Each package has its own README. See the following links for more details.
 
 ```
 yarn build  # build all packages
+yarn build:contracts  # build contracts
+yarn build:exporter  # build exporter
+yarn build:ts  # build typescript packages
 yarn test   # run all tests
+yarn dev:exporter  # run exporter server in dev mode
 yarn lint:check   # run all linters
 yarn lint:fix   # run all linters
 ```
@@ -51,14 +55,14 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## TODO
 
-- [ ] トークン移転などのイベントを取得し、Grafana で可視化する。Prometeus exporter の作成
+- [x] トークン移転などのイベントを取得し、Grafana で可視化する。Prometeus exporter の作成
   - [x] ユニットテスト
-  - [ ] Grafana で可視化確認
+  - [x] Grafana で可視化確認
 - [ ] Docker の Besu のデータを永続化する (Besu のバグでデフォルト以外のデータパスをマウントできないっぽい)
 - [x] CI の設定
-  - [x] SlitherのCIが落ちるので直す
-~~- [ ] CD の設定~~
-- [ ] ドキュメントの整備 WIP
-  - [ ] Besu node
+  - [x] Slither の CI が落ちるので直す
+        ~~- [ ] CD の設定~~
+- [x] ドキュメントの整備 WIP
+  - [x] Besu node
 - [x] project root dir での`yarn` script のコマンドが長くなりすぎるので yarn v2 にアプデして yarn workspaces foreach の plugin 入れるか,`npm run workspaces`を使う
 - [x] `@exporter/exporter-sdk`と`@exporter/server`のユーティリティ系モジュールの切り出し

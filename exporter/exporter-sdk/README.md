@@ -38,6 +38,30 @@ To create a new custom metrics server, extend the `BaseMetricsServer` class and 
 
 ```ts
 import { BaseMetricsServer, TokenMetricsServer } from '@exporter/exporter-sdk'
+const metrics = {
+  tokenTransfer: new Counter({
+    name: 'token_transfer_events_count',
+    help: 'Number of transfers',
+    labelNames: ['token_name', 'transfer_type'],
+  }),
+  unhandledErrors: new Counter({
+    name: 'unhandled_errors',
+    help: 'Unhandled errors',
+    labelNames: ['error_message'],
+  }),
+}
+const service = new TokenMetricsServer(
+  metrics,
+  { testToken1: { address: '0x925Bd9F562cb4864e0F06de0E30739e8773038E6' } },
+  {
+    port: 3030,
+    rpcUrl: 'http://localhost:8545',
+    chainId: 1337,
+    multicall4: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+  }
+)
+service.startServer()
+service.run()
 ```
 
 ### Metrics endpoint `/metrics`

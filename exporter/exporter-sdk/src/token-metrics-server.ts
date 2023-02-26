@@ -110,7 +110,6 @@ export class TokenMetricsServer extends BaseMetricsServer<TokenMetrics> {
           return []
         })
       this.logger.debug(`got ${transferEvents.length} Transfer events for token ${token_name}`)
-      // TODO: collect metrics for each token
 
       // TODO: array#reduce
       const eventCounts = { mint: 0, burn: 0, transfer: 0 }

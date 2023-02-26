@@ -75,6 +75,8 @@ export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
     })
   }
 
+  /// @dev Starts the metrics server
+  /// Registers the default metrics and starts the server.
   startServer() {
     this.logger.info('starting metrics server')
 
@@ -87,10 +89,8 @@ export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
     })
   }
 
-  /**
-   * Tries to gracefully stop the service. Service will continue running until the current loop
-   * iteration is finished and will then stop looping.
-   */
+  /// @dev Tries to gracefully stop the service. Service will continue running until the current loop
+  /// iteration is finished and will then stop looping.
   public async stop(): Promise<void> {
     this.logger.info('stopping main loop...')
     clearTimeout(this.timer)
@@ -124,8 +124,11 @@ export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
       this.contracts[name] = new ethers.Contract(address, interfaceAbi, this.provider)
     }
   }
+
+  /// @dev Override this function to initialize the service.
   protected _init(): void {}
 
+  /// @dev Override this function to implement the main loop.
   protected abstract internalMain(): Promise<void>
 
   /// Runs the main function. If this service is set up to loop, will repeatedly loop around the
@@ -141,6 +144,7 @@ export abstract class BaseMetricsServer<CustomMetrics extends BaseMetrics> {
         this.metrics.unhandledErrors.labels(err.message).inc()
         this.logger.error(err, 'caught an unhandled exception')
       }
+      // schedule next loop
       this.timer = setTimeout(doLoop, this.loopIntervalMs)
     }
     doLoop()
