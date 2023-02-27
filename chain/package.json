@@ -9,5 +9,8 @@
     "build": "exit 0",
     "lint:fix": "exit 0",
     "lint:check": "exit 0"
+  },
+  "dependencies": {
+    "ethers": "5.7.2"
   }
 }

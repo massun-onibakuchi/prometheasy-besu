@@ -16,7 +16,7 @@ services:
         source: ./config/besu/${BESU_CONFIG}
         target: /config
       - type: bind
-        source: ./config/keys/${BESU_CONFIG}/rpcnode
+        source: ./config/keys/${BESU_CONFIG}/${NODE_LABEL}
         target: /opt/besu/keys
     # Bug
     # https://github.com/hyperledger/besu/issues/4292

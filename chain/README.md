@@ -37,17 +37,21 @@ To Launch nodes with QBFT consensus for production deployment, you have to setup
 
 Before you start, make sure you have a node key and public key. You can generate them with the following commands:
 
-Run these commands on each node.
+Run these commands on each node in `chain` folder.
+
+for each node you have to set `NODE_LABEL` to node label. e.g. `NODE_LABEL=rpcnode`, `NODE_LABEL=validator1`, `NODE_LABEL=validator2`, `NODE_LABEL=validator3`.
 
 ```
-docker run -it --rm -v $(pwd)/config/keys/production:/opt/besu/config/keys/production hyperledger/besu:<BASU_IMAGE_VERSION>
-
-# and attach to the container
-docker attach <container id>
-
-besu --data-path=./config/keys/production/<rpcnode or validtor1...> public-key export
-# exit the container
+cd chain # move to chain folder
+yarn install
+NODE_LABEL=<label> node generate-node-key.js
 ```
+
+This will generate `nodekey`, `nodekey.pub` and `address` files in `config/keys/production/<label>/` folder.
+
+<!-- ```
+docker run -it --rm -v $(pwd)/config/keys/production:/opt/besu/config/keys/production hyperledger/besu:22.10.3 --data-path=/opt/besu/data public-key export --to=/opt/besu/config/keys/production/nodekey.pub
+``` -->
 
 ### Setup genesis.json
 
@@ -63,6 +67,7 @@ You have to setup at least one node in `static-nodes.json` in `config/besu/produ
 
 ```
 BESU_CONFIG=production
+NODE_LABEL=<label> # setup `rpcnode`, `validator1`, `validator2` or `validator3` for each node. You can also create your own config files e.g. `config/keys/production/<label>` folder
 ```
 
 2. Run `docker-compose -f docker-compose-single.yml up -d` on each server.
