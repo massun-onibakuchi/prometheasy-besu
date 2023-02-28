@@ -87,14 +87,16 @@ jobs:
           echo '## Coverage results' >> $GITHUB_STEP_SUMMARY
           echo "$(cat ./summary.md)" >> $GITHUB_STEP_SUMMARY
 
-      - run: |
-          # This is a workaround for lcov.info not being generated as expected
-          # This generates a lcov.info file in contracts/lcov.info instead of the root
-          yarn coverage:sol --report=lcov --silent > lcov.info
+      - name: Coverage
+        run: |
+          # This generates contracts/lcov.info
+          yarn coverage:sol --report=lcov --silent
+      - name: Move lcov.info
+        run: mv contracts/lcov.info lcov.info
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: ./contracts/lcov.info
+          files: lcov.info
 
   full-pass:
     needs:

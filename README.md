@@ -6,7 +6,7 @@
   - [README - Configs for Besu, Prometheus and Grafana](./chain/config/README.md)
 - [README - Solidity contracts](./contracts/README.md): Solidity contracts template `contracts` package
   - See also [Access controllable Token Implementations](https://github.com/shinonome-inc/st-sol/): Opinionated Template for access controllable Token on EVM based chain
-- Prometheus Exporter: Export custom metrics from Besu node to Prometheus
+- Prometheus Exporter: Export custom metrics to Prometheus
   - [README - Exporter SDK](./exporter/exporter-sdk/README.md) : SDK for exporting custom metrics `@exporter/exporter-sdk`
   - [README - Exporter Server](./exporter/server/README.md) : Server for exporting custom metrics `@exporter/server`
 - [README - Performance Test Util](./perf-tester/README.md): Performance test util scripts, sends transactions with configured interval `perf-tester` package
