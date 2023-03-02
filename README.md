@@ -9,7 +9,7 @@
 - Prometheus Exporter: Export custom metrics to Prometheus
   - [README - Exporter SDK](./exporter/exporter-sdk/README.md) : SDK for exporting custom metrics `@exporter/exporter-sdk`
   - [README - Exporter Server](./exporter/server/README.md) : Server for exporting custom metrics `@exporter/server`
-- [README - Performance Test Util](./perf-tester/README.md): Performance test util scripts, sends transactions with configured interval `perf-tester` package
+- [README - Performance Test Util](./perf-tester/README.md): Performance test util scripts, sends transactions with configured interval. `perf-tester` packages
 - [README - Common TypeScript utilities](./common-ts/README.md): Common TypeScript utilities `@prometheasy-besu/common-ts`
 
 ### Requirements
@@ -59,6 +59,10 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
   - [x] ユニットテスト
   - [x] Grafana で可視化確認
 - [ ] Docker の Besu のデータを永続化する (Besu のバグでデフォルト以外のデータパスをマウントできないっぽい)
+- [x] Besu のノードを全て同じ EC2 インスタンスで立ち上げる時の設定を追加する
+  - [x] Prometheus + Grafana の設定
+- [ ] Besu のノード別の EC2 インスタンスで立ち上げる時の設定を追加する
+  - [ ] Prometheus + Grafana の設定
 - [x] CI の設定
   - [x] Slither の CI が落ちるので直す
         ~~- [ ] CD の設定~~
@@ -66,3 +70,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
   - [x] Besu node
 - [x] project root dir での`yarn` script のコマンドが長くなりすぎるので yarn v2 にアプデして yarn workspaces foreach の plugin 入れるか,`npm run workspaces`を使う
 - [x] `@exporter/exporter-sdk`と`@exporter/server`のユーティリティ系モジュールの切り出し
+- [ ] TokenMetricsExporter のサーバーを止めるとカウントしているメトリクスがおそらく消えるので、DB に保存するようにする
+- [ ] Frontend 追加する?
+  - [ ] typescript + wagmi react hook (+ next.js) あたりのテンプレート入れる
+- [ ] Django? (Typescript の方が contract ABI の型とライブラリが揃っているので、相性いい)

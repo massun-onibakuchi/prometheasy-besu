@@ -4,6 +4,11 @@ logging = "INFO"
 data-path = "/opt/besu/database"
 host-allowlist = ["*"]
 
+# dev
+# Enables or disables including the revert reason in the transaction receipt, eth_estimateGas error response, eth_call error response, and trace response. The default is false.
+# Enabling revert reason may use a significant amount of memory. We don’t recommend enabling revert reason when connected to public Ethereum networks.
+revert-reason-enabled=false
+
 # network
 tx-pool-limit-by-account-percentage = "1.0"
 p2p-port = 30303                            # The default is 30303.

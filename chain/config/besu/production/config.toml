@@ -2,7 +2,15 @@ genesis-file = "/config/genesis.json"
 node-private-key-file = "/opt/besu/keys/nodekey"
 logging = "INFO"
 data-path = "/opt/besu/database"
+# Specifying “*” for --host-allowlist is not recommended for production code.
 host-allowlist = ["*"]
+
+# p2p
+
+# dev
+# Enables or disables including the revert reason in the transaction receipt, eth_estimateGas error response, eth_call error response, and trace response. The default is false.
+# Enabling revert reason may use a significant amount of memory. We don’t recommend enabling revert reason when connected to public Ethereum networks.
+revert-reason-enabled = false
 
 # network
 tx-pool-limit-by-account-percentage = "1.0"
@@ -10,9 +18,21 @@ p2p-port = 30303                            # The default is 30303.
 
 # rpc
 rpc-http-enabled = true
+# To allow remote connections, set to 0.0.0.0.
+# Setting the host to 0.0.0.0 exposes the RPC connection on your node to any remote connection. 
+# In a production environment, ensure you are using a firewall to avoid exposing your node to the internet.
 rpc-http-host = "0.0.0.0"
 rpc-http-port = 8545
 rpc-http-cors-origins = ["*"]
+# "TXPOOL and DEBUG" api might be useful.
+rpc-http-api = [
+    "ETH",
+    "NET",
+    "WEB3",
+    "TXPOOL",
+    "DEBUG",
+] # Default ["ETH", "NET", "WEB3"]
+
 
 # ws
 rpc-ws-enabled = false
@@ -26,7 +46,7 @@ graphql-http-enabled = false
 # graphql-http-cors-origins = ["*"]
 
 # metrics
-metrics-enabled = false
+metrics-enabled = true
 metrics-host = "0.0.0.0"
 metrics-port = 9545
 

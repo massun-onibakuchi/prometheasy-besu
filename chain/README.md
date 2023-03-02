@@ -53,11 +53,27 @@ This will generate `nodekey`, `nodekey.pub` and `address` files in `config/keys/
 docker run -it --rm -v $(pwd)/config/keys/production:/opt/besu/config/keys/production hyperledger/besu:22.10.3 --data-path=/opt/besu/data public-key export --to=/opt/besu/config/keys/production/nodekey.pub
 ``` -->
 
-### Setup genesis.json
+### Setup genesis.json and config.toml
 
 And then you have to setup genesis.json and config.toml files in `config/besu/production/` folder for all besu nodes.
-
 QBFT requres `extraData` field in `genesis.json` with [the specific format](https://besu.hyperledger.org/en/stable/private-networks/how-to/configure/consensus/ibft/?h=extra#configure-ibft-20-consensus).
+
+Then set bootnodes in `config.toml` file in `config/besu/production/` folder for all besu nodes.
+
+```yml
+bootnodes = ["enode://<nodekey>@<ip>:<port>"] # At least one node is required
+```
+
+Some worth mentioning options in `config.toml` are:
+
+```yml
+host-allowlist = ["*"] # Specifying '*' for --host-allowlist is not recommended for production code.
+rpc-http-enabled = true # true for rpc node.
+rpc-http-host = "0.0.0.0" # To allow remote connections, in produnction environment set to 0.0.0.0. ensure you are using a firewall to avoid exposing your node to the internet.
+revert-reason-enabled = true # useful for debugging but memory intensive according to Besu docs
+tx-pool-limit-by-account-percentage = "1.0" # This should be 1.0 for private chains
+metrics-enabled = true # true if you want to visualize metrics in Grafana dashboard + Prometheus
+```
 
 ### Setup static-nodes.json and permissions_config.toml
 
@@ -71,6 +87,7 @@ NODE_LABEL=<label> # setup `rpcnode`, `validator1`, `validator2` or `validator3`
 ```
 
 2. Run `docker-compose -f docker-compose-single.yml up -d` on each server.
+   Optionally you can override or pass options with `BESU_OPTS`. e.g. `BESU_OPTS="--revert-reason-enabled=true" `.
 
 ## How it works
 
